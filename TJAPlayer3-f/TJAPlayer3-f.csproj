@@ -28,7 +28,7 @@
     <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
     <PackageReference Include="LargeAddressAware" Version="1.0.6" />
     <PackageReference Include="Tomlyn" Version="0.19.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="4.14.0" />
   </ItemGroup>
   <ItemGroup Label="Resources">
     <EmbeddedResource Include="TJAPlayer3-f.ico" />

@@ -46,7 +46,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '8.0.x'
     - name: Build
       run: dotnet publish TJAPlayer3-f -o publish -r ${{ matrix.config.platform }} -p:MyOption=PUBLISH -p:PublishSingleFile=true --configuration Release --self-contained true
 
@@ -76,9 +76,9 @@ jobs:
 
     - name: Upload Artifact(Pre)
       if: (startsWith(github.ref, 'refs/tags/Ver')) != true
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
-        name: TJAPlayer3-f-${{ matrix.config.platform }}-${{ needs.get_rev_list_count.outputs.rev_list_count }}
+        name: TJAPlayer3-f
         path: ${{ github.workspace }}/TJAPlayer3-f-PreRelease-${{ matrix.config.platform }}-${{ needs.get_rev_list_count.outputs.rev_list_count }}.zip
 
     #Release
@@ -90,9 +90,9 @@ jobs:
 
     - name: Upload Artifact
       if: (startsWith(github.ref, 'refs/tags/Ver'))
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
-        name: TJAPlayer3-f-${{ matrix.config.os-platform }}
+        name: TJAPlayer3-f
         path: ${{ github.workspace }}/TJAPlayer3-f-${{ matrix.config.os-platform }}.zip
 
 
@@ -106,8 +106,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Download Artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v3
       with:
+        name: TJAPlayer3-f
         path: artifacts
 
     # https://gist.github.com/superbrothers/af84a2f8af394a62352e06537a640746
@@ -117,7 +118,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd ${{ github.workspace }}/artifacts
-        mv ./*/*.zip ./
         RELEASE_NAME=TJAPlayer3-f-prerelease-${{ needs.get_rev_list_count.outputs.rev_list_count }}
         TAG_NAME=prerelease-${{ needs.get_rev_list_count.outputs.rev_list_count }}
         gh release create "${TAG_NAME}" ${{ github.workspace }}/artifacts/*.zip -t "${RELEASE_NAME}" -p
@@ -128,7 +128,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd ${{ github.workspace }}/artifacts
-        mv ./*/*.zip ./
         VERSION=$(echo ${{ github.ref }} | sed -e "s#refs/tags/##g")
         RELEASE_NAME=${VERSION}
         TAG_NAME=${VERSION}

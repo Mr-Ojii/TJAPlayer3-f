@@ -18,7 +18,7 @@ internal class Program
         if (version is not null)
             version_string = version.ToString();
 
-        Mutex mutex = new Mutex(false, "Global\\TJAPlayer3-f-Ver." + version_string);
+        Mutex mutex = new Mutex(false, "Global\\gamenyoi-Ver." + version_string);
 
         if (mutex.WaitOne(0, false))
         {
@@ -30,7 +30,7 @@ internal class Program
             else if (OperatingSystem.IsLinux())
                 osplatform = "linux";
             else
-                throw new PlatformNotSupportedException("TJAPlayer3-f does not support this OS.");
+                throw new PlatformNotSupportedException("gamenyoi does not support this OS.");
 
             string platform = "";
 
@@ -49,7 +49,7 @@ internal class Program
                     platform = "arm64";
                     break;
                 default:
-                    throw new PlatformNotSupportedException($"TJAPlayer3-f does not support this Architecture. ({RuntimeInformation.ProcessArchitecture})");
+                    throw new PlatformNotSupportedException($"gamenyoi does not support this Architecture. ({RuntimeInformation.ProcessArchitecture})");
             }
 
             FFmpeg.AutoGen.ffmpeg.RootPath = AppContext.BaseDirectory + @"FFmpeg/" + osplatform + "-" + platform + "/";
@@ -188,13 +188,12 @@ internal class Program
         {
             unsafe
             {
-                var msg = Encoding.UTF8.GetBytes($"TJAPlayer3-f(Ver.{Assembly.GetExecutingAssembly().GetName().Version}) is already running.");
-                var app = "TJAPlayer3-f"u8;
+                var msg = Encoding.UTF8.GetBytes($"gamenyoi(Ver.{Assembly.GetExecutingAssembly().GetName().Version}) is already running.");
+                var app = "gamenyoi"u8;
                 fixed(byte* pmsg = msg)
-                    fixed(byte* papp = app) {
-                        SDL3.SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags.SDL_MESSAGEBOX_WARNING, papp, pmsg, null);
-                        Console.WriteLine(msg);
-                    }
+                    fixed(byte* papp = app)
+                        if (SDL3.SDL_ShowSimpleMessageBox(SDL_MessageBoxFlags.SDL_MESSAGEBOX_WARNING, papp, pmsg, null) != 0)
+                            Console.WriteLine(msg);
             }
         }
     }

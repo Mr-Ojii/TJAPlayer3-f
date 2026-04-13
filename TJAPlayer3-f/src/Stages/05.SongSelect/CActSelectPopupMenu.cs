@@ -72,7 +72,7 @@ internal class CActSelectPopupMenu : CActivity
 
     private void ConditionallyInitializePrvFont()
     {
-        if (prvFont is null)
+        if (prvFont == null)
         {
             prvFont = new CCachedFontRenderer(TJAPlayer3.app.ConfigToml.General.FontName, 18);
         }
@@ -246,17 +246,17 @@ internal class CActSelectPopupMenu : CActivity
                 #endregion
             }
             #region [ ポップアップメニュー 背景描画 ]
-            if (TJAPlayer3.app.Tx.Menu_Title is not null)
+            if (TJAPlayer3.app.Tx.Menu_Title != null)
             {
                 TJAPlayer3.app.Tx.Menu_Title.t2D描画(TJAPlayer3.app.Device, 160, 40);
             }
             #endregion
             #region [ ソートメニュータイトル描画 ]
             int x = 210, y = 60;
-            stqMenuTitle.txName?.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Left, x, y);
+            stqMenuTitle.txName.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Left, x, y);
             #endregion
             #region [ カーソル描画 ]
-            if (TJAPlayer3.app.Tx.Menu_Highlight is not null)
+            if (TJAPlayer3.app.Tx.Menu_Highlight != null)
             {
                 int height = 32;
                 int curX = 180;
@@ -277,9 +277,9 @@ internal class CActSelectPopupMenu : CActivity
             {
                 bool bItemBold = (i == nItemSelecting && !bShowAllItems) ? true : false;
                 //font.t文字列描画( 190, 80 + i * 32, lciMenuItems[ i ].cItem.strName, bItemBold, 1.0f );
-                if (lciMenuItems[i].txName is not null)
+                if (lciMenuItems[i].txName != null)
                 {
-                    lciMenuItems[i].txName?.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Left, 180, 92 + i * 32);
+                    lciMenuItems[i].txName.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Left, 180, 92 + i * 32);
                 }
 
                 bool bValueBold = (bItemBold || (i == nItemSelecting && bIsSelectingIntItem)) ? true : false;
@@ -306,12 +306,12 @@ internal class CActSelectPopupMenu : CActivity
                             break;
                     }
                     using (var bmpStr = bValueBold ?
-                        prvFont?.DrawText(s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio) :
-                        prvFont?.DrawText(s, Color.White, Color.Black, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio))
+                        prvFont.DrawText(s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio) :
+                        prvFont.DrawText(s, Color.White, Color.Black, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio))
                     {
                         using (var ctStr = TJAPlayer3.app.tCreateTexture(bmpStr))
                         {
-                            ctStr?.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Left, 330, 92 + i * 32);
+                            ctStr.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Left, 330, 92 + i * 32);
                         }
                     }
                 }
@@ -334,12 +334,12 @@ internal class CActSelectPopupMenu : CActivity
 
     //private CTexture txPopupMenuBackground;
     //private CTexture txCursor;
-    CCachedFontRenderer? prvFont;
+    CCachedFontRenderer prvFont;
 
     internal struct stQuickMenuItem
     {
         internal CItemBase cItem;
-        internal CTexture? txName;
+        internal CTexture txName;
     }
     private stQuickMenuItem[] lciMenuItems;
     private stQuickMenuItem stqMenuTitle;

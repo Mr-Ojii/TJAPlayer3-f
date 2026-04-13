@@ -116,7 +116,7 @@ internal class CActConfigKeyAssign : CActivity
                 TJAPlayer3.app.ConfigIni.KeyAssign[(int)this.pad][this.n現在の選択行].ID = 0;
                 TJAPlayer3.app.ConfigIni.KeyAssign[(int)this.pad][this.n現在の選択行].Code = 0;
             }
-            if (TJAPlayer3.app.Tx.Menu_Highlight is not null)
+            if (TJAPlayer3.app.Tx.Menu_Highlight != null)
             {
                 int num = 20;
                 int num2 = 0x144;
@@ -167,7 +167,7 @@ internal class CActConfigKeyAssign : CActivity
             y += num5;
             tDrawText(x + 20, y, "<< Return to List", this.n現在の選択行 == 0x11, 0.75f);
             y += num5;
-            if (this.bキー入力待ち && (TJAPlayer3.app.Tx.Config_KeyAssign is not null))
+            if (this.bキー入力待ち && (TJAPlayer3.app.Tx.Config_KeyAssign != null))
             {
                 TJAPlayer3.app.Tx.Config_KeyAssign.t2D描画(TJAPlayer3.app.Device, 0x185, 0xd7);
             }
@@ -203,8 +203,8 @@ internal class CActConfigKeyAssign : CActivity
     private int n現在の選択行;
     private EKeyConfigPad pad;
     private CConfigIni.CKeyAssign.STKEYASSIGN[] structReset用KeyAssign;
-    private string? strパッド名;
-    private CCachedFontRenderer? fontRenderer;
+    private string strパッド名;
+    private CCachedFontRenderer fontRenderer;
 
     private void tアサインコードの描画_Joypad(int line, int x, int y, int nID, int nCode, bool b強調)
     {
@@ -262,7 +262,7 @@ internal class CActConfigKeyAssign : CActivity
     }
     private void tアサインコードの描画_Keyboard(int line, int x, int y, int nID, int nCode, bool b強調)
     {
-        string? str = null;
+        string str = null;
         if (this.KeyLabel.TryGetValue(nCode, out var strLabel))
         {
             str = string.Format("{0,2}. Key {1}", line, strLabel);
@@ -364,20 +364,14 @@ internal class CActConfigKeyAssign : CActivity
         return false;
     }
 
-    private void tDrawText(int x, int y, string? str, bool b強調, float fScale)
+    private void tDrawText(int x, int y, string str, bool b強調, float fScale)
     {
-        if (this.fontRenderer is null || str is null)
-            return;
-
         Color fontcol = b強調 ? Color.Cyan : Color.White;
-        using (CTexture? fonttex = TJAPlayer3.app.tCreateTexture(this.fontRenderer.DrawText(str, fontcol, Color.DarkCyan, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio)))
+        using (CTexture fonttex = TJAPlayer3.app.tCreateTexture(this.fontRenderer.DrawText(str, fontcol, Color.DarkCyan, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio)))
         {
-            if (fonttex is not null)
-            {
-                fonttex.vcScaling.X = fScale;
-                fonttex.vcScaling.Y = fScale;
-                fonttex.t2D描画(TJAPlayer3.app.Device, x, y);
-            }
+            fonttex.vcScaling.X = fScale;
+            fonttex.vcScaling.Y = fScale;
+            fonttex.t2D描画(TJAPlayer3.app.Device, x, y);
         }
     }
     //-----------------

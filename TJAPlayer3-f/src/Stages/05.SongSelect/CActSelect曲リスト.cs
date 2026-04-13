@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using FDK;
+﻿using FDK;
 
 namespace TJAPlayer3;
 
@@ -39,7 +38,7 @@ internal class CActSelect曲リスト : CActivity
     {
         get
         {
-            if (this.r現在選択中の曲 is not null)
+            if (this.r現在選択中の曲 != null)
                 return this.r現在選択中の曲.arスコア;
             return null;
         }
@@ -73,7 +72,7 @@ internal class CActSelect曲リスト : CActivity
     {
         // 事前チェック。
 
-        if (song is null)
+        if (song == null)
             return this.n現在のアンカ難易度レベル[nPlayer];  // 曲がまったくないよ
 
         if (song.arスコア.譜面情報.b譜面が存在する[this.n現在のアンカ難易度レベル[nPlayer]] != false)
@@ -118,13 +117,13 @@ internal class CActSelect曲リスト : CActivity
     }
     private List<C曲リストノード> GetSongListWithinMe(C曲リストノード song)
     {
-        if (song.r親ノード is null)                 // root階層のノートだったら
+        if (song.r親ノード == null)                 // root階層のノートだったら
         {
             return TJAPlayer3.SongsManager.list曲ルート; // rootのリストを返す
         }
         else
         {
-            if ((song.r親ノード.list子リスト is not null) && (song.r親ノード.list子リスト.Count > 0))
+            if ((song.r親ノード.list子リスト != null) && (song.r親ノード.list子リスト.Count > 0))
             {
                 return song.r親ノード.list子リスト;
             }
@@ -145,7 +144,7 @@ internal class CActSelect曲リスト : CActivity
     public void t曲リストのソート(DGSortFunc sf, int order, params object[] p)
     {
         List<C曲リストノード> songList = GetSongListWithinMe(this.r現在選択中の曲);
-        if (songList is null)
+        if (songList == null)
             return;
 
         //				CDTXMania.SongsManager.t曲リストのソート3_演奏回数の多い順( songList, eInst, order );
@@ -182,7 +181,7 @@ internal class CActSelect曲リスト : CActivity
         else
         {
 
-            if ((this.r現在選択中の曲.list子リスト is not null) && (this.r現在選択中の曲.list子リスト.Count > 0))
+            if ((this.r現在選択中の曲.list子リスト != null) && (this.r現在選択中の曲.list子リスト.Count > 0))
             {
                 if (this.r現在選択中の曲.list子リスト.Count > 1 && this.r現在選択中の曲.Openindex < this.r現在選択中の曲.list子リスト.Count)//見た目だけだと気づきにくいが、Indexがずれてるので、[1]にする。閉じるだけのものは、[0]にする。
                     this.r現在選択中の曲 = this.r現在選択中の曲.list子リスト[this.r現在選択中の曲.Openindex];
@@ -218,7 +217,7 @@ internal class CActSelect曲リスト : CActivity
         }
         else
         {
-            if (this.r現在選択中の曲.r親ノード is not null)
+            if (this.r現在選択中の曲.r親ノード != null)
             {
                 List<C曲リストノード> list = r現在選択中の曲.r親ノード.list子リスト;//t前の曲 t次の曲から、流用。
                 this.r現在選択中の曲.r親ノード.Openindex = r現在選択中の曲.r親ノード.list子リスト.IndexOf(this.r現在選択中の曲);
@@ -232,7 +231,7 @@ internal class CActSelect曲リスト : CActivity
     }
     public void t次に移動()
     {
-        if (this.r現在選択中の曲 is not null)
+        if (this.r現在選択中の曲 != null)
         {
             this.n目標のスクロールカウンタ += 100;
         }
@@ -240,7 +239,7 @@ internal class CActSelect曲リスト : CActivity
     }
     public void t前に移動()
     {
-        if (this.r現在選択中の曲 is not null)
+        if (this.r現在選択中の曲 != null)
         {
             this.n目標のスクロールカウンタ -= 100;
         }
@@ -248,7 +247,7 @@ internal class CActSelect曲リスト : CActivity
     }
     public void tかなり次に移動()
     {
-        if (this.r現在選択中の曲 is not null)
+        if (this.r現在選択中の曲 != null)
         {
             for (int i = 0; i < TJAPlayer3.app.ConfigToml.SongSelect.SkipCount; i++)
                 this.r現在選択中の曲 = r次の曲(r現在選択中の曲);
@@ -260,7 +259,7 @@ internal class CActSelect曲リスト : CActivity
     }
     public void tかなり前に移動()
     {
-        if (this.r現在選択中の曲 is not null)
+        if (this.r現在選択中の曲 != null)
         {
             for (int i = 0; i < TJAPlayer3.app.ConfigToml.SongSelect.SkipCount; i++)
                 this.r現在選択中の曲 = r前の曲(r現在選択中の曲);
@@ -272,9 +271,9 @@ internal class CActSelect曲リスト : CActivity
     }
     public void tフォルダのはじめに移動()
     {
-        if (this.r現在選択中の曲 is not null)
+        if (this.r現在選択中の曲 != null)
         {
-            if (this.r現在選択中の曲.r親ノード is not null)
+            if (this.r現在選択中の曲.r親ノード != null)
                 this.r現在選択中の曲 = this.r現在選択中の曲.r親ノード.list子リスト[0];
             else
                 this.r現在選択中の曲 = TJAPlayer3.SongsManager.list曲ルート[0];
@@ -286,9 +285,9 @@ internal class CActSelect曲リスト : CActivity
     }
     public void tフォルダの最後に移動()
     {
-        if (this.r現在選択中の曲 is not null)
+        if (this.r現在選択中の曲 != null)
         {
-            if (this.r現在選択中の曲.r親ノード is not null)
+            if (this.r現在選択中の曲.r親ノード != null)
                 this.r現在選択中の曲 = this.r現在選択中の曲.r親ノード.list子リスト[this.r現在選択中の曲.r親ノード.list子リスト.Count - 1];
             else
                 this.r現在選択中の曲 = TJAPlayer3.SongsManager.list曲ルート[TJAPlayer3.SongsManager.list曲ルート.Count - 1];
@@ -300,7 +299,7 @@ internal class CActSelect曲リスト : CActivity
     }
     public void t難易度レベルをひとつ進める(int nPlayer)
     {
-        if ((this.r現在選択中の曲 is null) || (this.r現在選択中の曲.nスコア数 <= 1))
+        if ((this.r現在選択中の曲 == null) || (this.r現在選択中の曲.nスコア数 <= 1))
             return;     // 曲にスコアが０～１個しかないなら進める意味なし。
 
 
@@ -320,7 +319,7 @@ internal class CActSelect曲リスト : CActivity
     /// </summary>
     public void t難易度レベルをひとつ戻す(int nPlayer)
     {
-        if ((this.r現在選択中の曲 is null) || (this.r現在選択中の曲.nスコア数 <= 1))
+        if ((this.r現在選択中の曲 == null) || (this.r現在選択中の曲.nスコア数 <= 1))
             return;     // 曲にスコアが０～１個しかないなら進める意味なし。
 
 
@@ -346,10 +345,10 @@ internal class CActSelect曲リスト : CActivity
     {
         //			this.On非活性化();
 
-        if (cs is not null && cs.list曲ルート.Count > 0)    // 新しい曲リストを検索して、1曲以上あった
+        if (cs != null && cs.list曲ルート.Count > 0)    // 新しい曲リストを検索して、1曲以上あった
         {
             TJAPlayer3.SongsManager = cs;
-            if (this.r現在選択中の曲 is not null)          // r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
+            if (this.r現在選択中の曲 != null)          // r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
             {
                 this.r現在選択中の曲 = searchCurrentBreadcrumbsPosition(TJAPlayer3.SongsManager.list曲ルート, this.r現在選択中の曲.strBreadcrumbs);
                 if (bRemakeSongTitleBar)                    // 選曲画面以外に居るときには再構成しない (非活性化しているときに実行すると例外となる)
@@ -384,10 +383,10 @@ internal class CActSelect曲リスト : CActivity
             {
                 return n;
             }
-            else if (n.list子リスト is not null && n.list子リスト.Count > 0)    // 子リストが存在するなら、再帰で探す
+            else if (n.list子リスト != null && n.list子リスト.Count > 0)    // 子リストが存在するなら、再帰で探す
             {
                 C曲リストノード r = searchCurrentBreadcrumbsPosition(n.list子リスト, bc);
-                if (r is not null) return r;
+                if (r != null) return r;
             }
         }
         return null;
@@ -399,14 +398,14 @@ internal class CActSelect曲リスト : CActivity
     public void t選択曲が変更された(bool bForce) // #27648
     {
         C曲リストノード song = TJAPlayer3.stage選曲.act曲リスト.r現在選択中の曲;
-        if (song is null)
+        if (song == null)
             return;
         if (song == song_last && bForce == false)
             return;
 
         song_last = song;
 
-        List<C曲リストノード> list = (song.r親ノード is not null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide) ? song.r親ノード.list子リスト : TJAPlayer3.SongsManager.list曲ルート;
+        List<C曲リストノード> list = (song.r親ノード != null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide) ? song.r親ノード.list子リスト : TJAPlayer3.SongsManager.list曲ルート;
         int index = list.IndexOf(song) + 1;
         if (index <= 0)
         {
@@ -454,7 +453,7 @@ internal class CActSelect曲リスト : CActivity
 
         // 現在選択中の曲がない（＝はじめての活性化）なら、現在選択中の曲をルートの先頭ノードに設定する。
 
-        if ((this.r現在選択中の曲 is null) && (TJAPlayer3.SongsManager.list曲ルート.Count > 0))
+        if ((this.r現在選択中の曲 == null) && (TJAPlayer3.SongsManager.list曲ルート.Count > 0))
             this.r現在選択中の曲 = TJAPlayer3.SongsManager.list曲ルート[0];
 
 
@@ -476,8 +475,7 @@ internal class CActSelect曲リスト : CActivity
             using (CFontRenderer pffont = new CFontRenderer(TJAPlayer3.app.ConfigToml.General.FontName, 32))
             {
                 this.txSongNotFound = TJAPlayer3.app.tCreateTexture(pffont.DrawText(s1[c], Color.White));
-                if (this.txSongNotFound is not null)
-                    this.txSongNotFound.vcScaling = new Vector2(0.5f);
+                this.txSongNotFound.vcScaling = new Vector2(0.5f);
             }
         }
         catch (CTextureCreateFailedException e)
@@ -495,8 +493,7 @@ internal class CActSelect曲リスト : CActivity
             using (CFontRenderer pffont = new CFontRenderer(TJAPlayer3.app.ConfigToml.General.FontName, 32))
             {
                 this.txEnumeratingSongs = TJAPlayer3.app.tCreateTexture(pffont.DrawText(s1[c], Color.White));
-                if (this.txEnumeratingSongs is not null)
-                    this.txEnumeratingSongs.vcScaling = new Vector2(0.5f);
+                this.txEnumeratingSongs.vcScaling = new Vector2(0.5f);
             }
         }
         catch (CTextureCreateFailedException e)
@@ -515,6 +512,11 @@ internal class CActSelect曲リスト : CActivity
     {
         if (this.b活性化してない)
             return;
+
+        for (int i = 0; i < 13; i++)
+        {
+            this.stバー情報[i].ttkタイトル = this.ttk曲名テクスチャを生成する(this.stバー情報[i].song.strTitle, this.stバー情報[i].song.ForeColor, this.stバー情報[i].song.BackColor);
+        }
 
         TJAPlayer3.t安全にDisposeする(ref pfMusicName);
         TJAPlayer3.t安全にDisposeする(ref pfSubtitle);
@@ -558,7 +560,7 @@ internal class CActSelect曲リスト : CActivity
 
         // まだ選択中の曲が決まってなければ、曲ツリールートの最初の曲にセットする。
 
-        if ((this.r現在選択中の曲 is null) && (TJAPlayer3.SongsManager.list曲ルート.Count > 0))
+        if ((this.r現在選択中の曲 == null) && (TJAPlayer3.SongsManager.list曲ルート.Count > 0))
             this.r現在選択中の曲 = TJAPlayer3.SongsManager.list曲ルート[0];
 
         // 本ステージは、(1)登場アニメフェーズ → (2)通常フェーズ　と二段階にわけて進む。
@@ -575,19 +577,19 @@ internal class CActSelect曲リスト : CActivity
 
 
         //展開アニメ用
-        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center != null)
             TJAPlayer3.app.Tx.SongSelect_Bar_Center.vcScaling.X = this.ctバー展開用タイマー.n現在の値 / 100f;
 
         for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre.Length; i++)
-            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[i] is not null)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[i] != null)
                 TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[i].vcScaling.X = this.ctバー展開用タイマー.n現在の値 / 100f;
 
         for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre.Length; i++)
-            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[i] is not null)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[i] != null)
                 TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[i].vcScaling.X = this.ctバー展開用タイマー.n現在の値 / 100f;
 
         for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre.Length; i++)
-            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[i] is not null)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[i] != null)
             {
                 TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[i].vcScaling.X = this.ctバー展開用タイマー.n現在の値 / 100f;
                 TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[i].vcScaling.Y = Math.Max(this.ctバー展開用タイマー.n現在の値 - (this.ctバー展開用タイマー.n終了値 / 2), 0) / 50f;
@@ -607,75 +609,75 @@ internal class CActSelect曲リスト : CActivity
 
         //しょうがないから、この曲リストで、描画するすべてのテクスチャのOpacityをここで決める。
         //その他のいい方法あったら、プルリクお願いします。受け入れます。(CActSelect曲リスト全体の透明度変更できたらいいな。)
-        if (TJAPlayer3.app.Tx.SongSelect_Branch_Text_NEW is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Branch_Text_NEW != null)
             TJAPlayer3.app.Tx.SongSelect_Branch_Text_NEW.Opacity = Math.Min((int)((ct分岐フェード用タイマー.n現在の値 % 2) * 255.0), 全体Opacity);
 
-        if (TJAPlayer3.app.Tx.SongSelect_PapaMama is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_PapaMama != null)
             TJAPlayer3.app.Tx.SongSelect_PapaMama.Opacity = Math.Min((int)((ct分岐フェード用タイマー.n現在の値 % 2) * 255.0), 全体Opacity);
 
-        if (TJAPlayer3.app.Tx.SongSelect_Cursor_Left is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Cursor_Left != null)
             TJAPlayer3.app.Tx.SongSelect_Cursor_Left.Opacity = Math.Min(255 - (ct三角矢印アニメ.n現在の値 * 255 / ct三角矢印アニメ.n終了値), 全体Opacity);
 
-        if (TJAPlayer3.app.Tx.SongSelect_Cursor_Right is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Cursor_Right != null)
             TJAPlayer3.app.Tx.SongSelect_Cursor_Right.Opacity = Math.Min(255 - (ct三角矢印アニメ.n現在の値 * 255 / ct三角矢印アニメ.n終了値), 全体Opacity);
 
-        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center != null)
             TJAPlayer3.app.Tx.SongSelect_Bar_Center.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.SongSelect_Frame_Score is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Frame_Score != null)
             TJAPlayer3.app.Tx.SongSelect_Frame_Score.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.SongSelect_Frame_BackBox is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Frame_BackBox != null)
             TJAPlayer3.app.Tx.SongSelect_Frame_BackBox.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.SongSelect_Frame_Random is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Frame_Random != null)
             TJAPlayer3.app.Tx.SongSelect_Frame_Random.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.SongSelect_Level is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Level != null)
             TJAPlayer3.app.Tx.SongSelect_Level.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.Crown_t is not null)
+        if (TJAPlayer3.app.Tx.Crown_t != null)
             TJAPlayer3.app.Tx.Crown_t.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.DanC_Crown_t is not null)
+        if (TJAPlayer3.app.Tx.DanC_Crown_t != null)
             TJAPlayer3.app.Tx.DanC_Crown_t.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.Difficulty_Icons is not null)
+        if (TJAPlayer3.app.Tx.Difficulty_Icons != null)
             TJAPlayer3.app.Tx.Difficulty_Icons.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.SongSelect_GenreText is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_GenreText != null)
             TJAPlayer3.app.Tx.SongSelect_GenreText.Opacity = 全体Opacity;
 
-        if (TJAPlayer3.app.Tx.SongSelect_Bar_BackBox is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_Bar_BackBox != null)
             TJAPlayer3.app.Tx.SongSelect_Bar_BackBox.Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Lyric_Text)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Lyric_Text.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Lyric_Text[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Lyric_Text[i].Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[i].Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[i].Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[i].Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[i].Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre[i].Opacity = 全体Opacity;
 
-        foreach (var i in TJAPlayer3.app.Tx.SongSelect_Bar_Genre)
-            if (i is not null)
-                i.Opacity = 全体Opacity;
+        for (int i = 0; i < TJAPlayer3.app.Tx.SongSelect_Bar_Genre.Length; i++)
+            if (TJAPlayer3.app.Tx.SongSelect_Bar_Genre[i] != null)
+                TJAPlayer3.app.Tx.SongSelect_Bar_Genre[i].Opacity = 全体Opacity;
         //------------ぐちゃぐちゃで意味わからんよね。ごめんね。
         //こう見てみると、意外にテクスチャ少なめ？
 
@@ -796,12 +798,12 @@ internal class CActSelect曲リスト : CActivity
 
             if (this.b選択曲が変更された && n現在のスクロールカウンタ == 0)
             {
-                if (this.ttk選択している曲の曲名 is not null)
+                if (this.ttk選択している曲の曲名 != null)
                 {
                     this.ttk選択している曲の曲名 = null;
                     this.b選択曲が変更された = false;
                 }
-                if (this.ttk選択している曲のサブタイトル is not null)
+                if (this.ttk選択している曲のサブタイトル != null)
                 {
                     this.ttk選択している曲のサブタイトル = null;
                     this.b選択曲が変更された = false;
@@ -814,7 +816,7 @@ internal class CActSelect曲リスト : CActivity
 
 
         // 描画。
-        if (this.r現在選択中の曲 is null)
+        if (this.r現在選択中の曲 == null)
         {
             #region [ 曲が１つもないなら「Songs not found.」を表示してここで帰れ。]
             //-----------------
@@ -837,24 +839,16 @@ internal class CActSelect曲リスト : CActivity
             return 0;
         }
 
-        if (this.r現在選択中の曲.r親ノード is not null)
+        if (this.r現在選択中の曲.r親ノード != null)
         {
             int GenreBack = TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.r親ノード.strGenre);
-            if (TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[GenreBack] is not null && TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[GenreBack] is not null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide)
+            if (TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[GenreBack] != null && TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[GenreBack] != null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide)
             {
                 int ForLoop = (int)(1280 / 100) + 1;
                 for (int i = 0; i < ForLoop; i++)
-                {
-                    CTexture? back_genre = TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[GenreBack];
-                    if (back_genre is not null)
-                        back_genre.t2D描画(TJAPlayer3.app.Device, i * 100, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(100, 0, 100, back_genre.szTextureSize.Height));
-                }
-                CTexture? header_genre = TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[GenreBack];
-                if (header_genre is not null)
-                {
-                    header_genre.vcScaling = new Vector2(1f);
-                    header_genre.t2D元サイズ基準描画(TJAPlayer3.app.Device, CTexture.RefPnt.Center, BoxCenterx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + TJAPlayer3.app.Skin.SkinConfig.SongSelect.BoxHeaderCorrectionY - 19, new Rectangle(0, 0, header_genre.szTextureSize.Width, 62));
-                }
+                    TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[GenreBack].t2D描画(TJAPlayer3.app.Device, i * 100, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[GenreBack].szTextureSize.Height));
+                TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[GenreBack].vcScaling = new Vector2(1f);
+                TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[GenreBack].t2D元サイズ基準描画(TJAPlayer3.app.Device, CTexture.RefPnt.Center, BoxCenterx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + TJAPlayer3.app.Skin.SkinConfig.SongSelect.BoxHeaderCorrectionY - 19, new Rectangle(0, 0, TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[GenreBack].szTextureSize.Width, 62));
             }
         }
 
@@ -876,7 +870,7 @@ internal class CActSelect曲リスト : CActivity
                 int n次のパネル番号 = (this.n現在のスクロールカウンタ <= 0) ? ((i + 1) % 13) : (((i - 1) + 13) % 13);
                 int xAnime = TJAPlayer3.app.Skin.SkinConfig.SongSelect.BarX[n見た目の行番号] + ((int)((TJAPlayer3.app.Skin.SkinConfig.SongSelect.BarX[n次のパネル番号] - TJAPlayer3.app.Skin.SkinConfig.SongSelect.BarX[n見た目の行番号]) * (((double)Math.Abs(this.n現在のスクロールカウンタ)) / 100.0)));
 
-                if (n見た目の行番号 == 5 && this.stバー情報[(nパネル番号 + 1) % 13].song.r親ノード is not null) //5のところでCenterを描画しないと、選択曲変更のとき、背景に隠れてしまう。
+                if (n見た目の行番号 == 5 && this.stバー情報[(nパネル番号 + 1) % 13].song.r親ノード != null) //5のところでCenterを描画しないと、選択曲変更のとき、背景に隠れてしまう。
                 {
                     int genre = TJAPlayer3.app.Skin.nStrジャンルtoNum(this.stバー情報[(nパネル番号 + 1) % 13].song.r親ノード.strGenre);
                     int basho = 1;
@@ -914,11 +908,12 @@ internal class CActSelect曲リスト : CActivity
                         }
                         int sixx = TJAPlayer3.app.Skin.SkinConfig.SongSelect.BarX[5] + 100 + lo * 100;
                         sixx -= this.n現在のスクロールカウンタ;
-                        TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre]?.t2D描画(TJAPlayer3.app.Device, sixx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(sixbasho * 100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[nnGenreBack].szTextureSize.Height));
+                        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre] != null)
+                            TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre].t2D描画(TJAPlayer3.app.Device, sixx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(sixbasho * 100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[nnGenreBack].szTextureSize.Height));
                     }
                 }
 
-                if (this.stバー情報[nパネル番号].song.r親ノード is not null)
+                if (this.stバー情報[nパネル番号].song.r親ノード != null)
                 {
                     int genre = TJAPlayer3.app.Skin.nStrジャンルtoNum(this.stバー情報[nパネル番号].song.r親ノード.strGenre);
                     int basho = 1;
@@ -928,25 +923,26 @@ internal class CActSelect曲リスト : CActivity
                         basho = 2;
                     if (n見た目の行番号 != 5 && n見た目の行番号 != 6 && n見た目の行番号 != 7)
                     {
-                        TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre]?.t2D描画(TJAPlayer3.app.Device, xAnime, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(basho * 100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[nnGenreBack].szTextureSize.Height));
+                        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre] != null)
+                            TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre].t2D描画(TJAPlayer3.app.Device, xAnime, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(basho * 100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[nnGenreBack].szTextureSize.Height));
                     }
                     else if (n見た目の行番号 != 6)
                     {
                         int fivesevenx = TJAPlayer3.app.Skin.SkinConfig.SongSelect.BarX[n見た目の行番号];
                         fivesevenx -= this.n現在のスクロールカウンタ;
-                        TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre]?.t2D描画(TJAPlayer3.app.Device, fivesevenx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(basho * 100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[nnGenreBack].szTextureSize.Height));
+                        if (TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre] != null)
+                            TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[genre].t2D描画(TJAPlayer3.app.Device, fivesevenx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 69, new Rectangle(basho * 100, 0, 100, TJAPlayer3.app.Tx.SongSelect_Bar_Center_Back_Genre[nnGenreBack].szTextureSize.Height));
                     }
                 }
             }
 
-            if (this.r現在選択中の曲.r親ノード is not null)
+            if (this.r現在選択中の曲.r親ノード != null)
             {
                 int genreheader = TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.r親ノード.strGenre);
-                CTexture? genre_header_tex = TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[genreheader];
-                if (genre_header_tex is not null)
+                if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[genreheader] != null)
                 {
-                    genre_header_tex.vcScaling = new Vector2(1f);
-                    genre_header_tex.t2D元サイズ基準描画(TJAPlayer3.app.Device, CTexture.RefPnt.Center, BoxCenterx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + TJAPlayer3.app.Skin.SkinConfig.SongSelect.BoxHeaderCorrectionY - 19, new Rectangle(0, 0, TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack].szTextureSize.Width, 62));
+                    TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[genreheader].vcScaling = new Vector2(1f);
+                    TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[genreheader].t2D元サイズ基準描画(TJAPlayer3.app.Device, CTexture.RefPnt.Center, BoxCenterx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + TJAPlayer3.app.Skin.SkinConfig.SongSelect.BoxHeaderCorrectionY - 19, new Rectangle(0, 0, TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack].szTextureSize.Width, 62));
                 }
             }
         }
@@ -999,7 +995,7 @@ internal class CActSelect曲リスト : CActivity
                 #endregion
 
                 #region [王冠を描画。]
-                if (TJAPlayer3.app.Tx.Crown_t is not null && TJAPlayer3.app.Tx.DanC_Crown_t is not null && (n見た目の行番号 != 6 || !ctバー展開ディレイ用タイマー.b終了値に達した) && this.stバー情報[nパネル番号].song.eNodeType == C曲リストノード.ENodeType.SCORE)
+                if (TJAPlayer3.app.Tx.Crown_t != null && TJAPlayer3.app.Tx.DanC_Crown_t != null && (n見た目の行番号 != 6 || !ctバー展開ディレイ用タイマー.b終了値に達した) && this.stバー情報[nパネル番号].song.eNodeType == C曲リストノード.ENodeType.SCORE)
                 {
                     if (this.stバー情報[nパネル番号].song.arスコア.譜面情報.nCrown[(int)Difficulty.Dan] != 0)
                     {
@@ -1015,7 +1011,7 @@ internal class CActSelect曲リスト : CActivity
                             if (this.stバー情報[nパネル番号].song.arスコア.譜面情報.nCrown[j] != 0)
                             {
                                 TJAPlayer3.app.Tx.Crown_t.t2D描画(TJAPlayer3.app.Device, xAnime + 25, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 23, new Rectangle(this.stバー情報[nパネル番号].song.arスコア.譜面情報.nCrown[j] * 100, 0, 100, 100));
-                                if (TJAPlayer3.app.Tx.Difficulty_Icons is not null)
+                                if (TJAPlayer3.app.Tx.Difficulty_Icons != null)
                                 {
                                     TJAPlayer3.app.Tx.Difficulty_Icons.vcScaling.X = 0.4f;
                                     TJAPlayer3.app.Tx.Difficulty_Icons.vcScaling.Y = 0.4f;
@@ -1034,25 +1030,25 @@ internal class CActSelect曲リスト : CActivity
         if ((this.n現在のスクロールカウンタ == 0) && (ctバー展開ディレイ用タイマー.b終了値に達した))
         {
             nnGenreBack = TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre);
-            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[nnGenreBack] is not null && TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack] is not null && this.r現在選択中の曲.eNodeType != C曲リストノード.ENodeType.BACKBOX && this.r現在選択中の曲.eNodeType != C曲リストノード.ENodeType.RANDOM)
+            if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[nnGenreBack] != null && TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack] != null && this.r現在選択中の曲.eNodeType != C曲リストノード.ENodeType.BACKBOX && this.r現在選択中の曲.eNodeType != C曲リストノード.ENodeType.RANDOM)
             {
                 if (this.r現在選択中の曲.eNodeType != C曲リストノード.ENodeType.SCORE)
                 {
                     TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[nnGenreBack].t2D描画(TJAPlayer3.app.Device, BoxCenterx - (int)(TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[nnGenreBack].szTextureSize.Width / 2 * ctバー展開用タイマー.n現在の値 / 100.0), TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
-                    if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[nnGenreBack] is not null)
+                    if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[nnGenreBack] != null)
                         TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[nnGenreBack].t2D描画(TJAPlayer3.app.Device, BoxCenterx - (int)(TJAPlayer3.app.Tx.SongSelect_Box_Center_Text_Genre[nnGenreBack].szTextureSize.Width / 2 * ctバー展開用タイマー.n現在の値 / 100.0), TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
                     TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack].t2D描画(TJAPlayer3.app.Device, BoxCenterx - (int)(TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack].szTextureSize.Width / 2 * ctバー展開用タイマー.n現在の値 / 100.0), TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + TJAPlayer3.app.Skin.SkinConfig.SongSelect.BoxHeaderCorrectionY - 69 + TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack].szTextureSize.Height / 2 - (int)(TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack].szTextureSize.Height / 2 * Math.Max(this.ctバー展開用タイマー.n現在の値 - (this.ctバー展開用タイマー.n終了値 / 2), 0) / 50.0));
                 }
-                else if (TJAPlayer3.app.Tx.SongSelect_Bar_Center is not null)
+                else if (TJAPlayer3.app.Tx.SongSelect_Bar_Center != null)
                     TJAPlayer3.app.Tx.SongSelect_Bar_Center.t2D描画(TJAPlayer3.app.Device, BoxCenterx - (int)(TJAPlayer3.app.Tx.SongSelect_Bar_Center.szTextureSize.Width / 2 * ctバー展開用タイマー.n現在の値 / 100.0), TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
             }
-            else if (TJAPlayer3.app.Tx.SongSelect_Bar_Center is not null)
+            else if (TJAPlayer3.app.Tx.SongSelect_Bar_Center != null)
                 TJAPlayer3.app.Tx.SongSelect_Bar_Center.t2D描画(TJAPlayer3.app.Device, BoxCenterx - (int)(TJAPlayer3.app.Tx.SongSelect_Bar_Center.szTextureSize.Width / 2 * ctバー展開用タイマー.n現在の値 / 100.0), TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
 
             if (this.r現在選択中の曲.eNodeType == C曲リストノード.ENodeType.BOX)
             {
                 int genretextureindex = TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre);
-                if (TJAPlayer3.app.Tx.SongSelect_GenreText is not null)
+                if (TJAPlayer3.app.Tx.SongSelect_GenreText != null)
                 {
                     TJAPlayer3.app.Tx.SongSelect_GenreText.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Center, BoxCenterx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 25, new Rectangle(0, genretextureindex * (TJAPlayer3.app.Tx.SongSelect_GenreText.szTextureSize.Height / (TJAPlayer3.app.Skin.SkinConfig.Genre.Values.Max() + 1)), TJAPlayer3.app.Tx.SongSelect_GenreText.szTextureSize.Width, (TJAPlayer3.app.Tx.SongSelect_GenreText.szTextureSize.Height / (TJAPlayer3.app.Skin.SkinConfig.Genre.Values.Max() + 1))));
                 }
@@ -1062,7 +1058,7 @@ internal class CActSelect曲リスト : CActivity
                 case C曲リストノード.ENodeType.SCORE:
                     {
                         #region [ Frame ]
-                        if (TJAPlayer3.app.Tx.SongSelect_Frame_Score is not null)
+                        if (TJAPlayer3.app.Tx.SongSelect_Frame_Score != null)
                         {
                             // 難易度がTower、Danではない
                             if (TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Tower && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Dan)
@@ -1097,7 +1093,7 @@ internal class CActSelect曲リスト : CActivity
                         }
                         #endregion
                         #region[ 星 ]
-                        if (TJAPlayer3.app.Tx.SongSelect_Level is not null)
+                        if (TJAPlayer3.app.Tx.SongSelect_Level != null)
                         {
                             // 全難易度表示
                             // 難易度がTower、Danではない
@@ -1132,10 +1128,10 @@ internal class CActSelect曲リスト : CActivity
                         }
                         #endregion
                         #region[譜面分岐や歌詞やパパママ]
-                        if (TJAPlayer3.app.Tx.SongSelect_Lyric_Text[TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre)] is not null && this.r現在選択中のスコア.譜面情報.b歌詞あり)
+                        if (TJAPlayer3.app.Tx.SongSelect_Lyric_Text[TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre)] != null && this.r現在選択中のスコア.譜面情報.b歌詞あり)
                             TJAPlayer3.app.Tx.SongSelect_Lyric_Text[TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre)].t2D描画(TJAPlayer3.app.Device, 483, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + 21);
 
-                        if (TJAPlayer3.app.Tx.SongSelect_Branch_Text_NEW is not null && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Tower && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Dan)
+                        if (TJAPlayer3.app.Tx.SongSelect_Branch_Text_NEW != null && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Tower && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Dan)
                         {
                             for (int i = 0; i < 4; i++)
                             {
@@ -1155,7 +1151,7 @@ internal class CActSelect曲リスト : CActivity
                                 }
                             }
                         }
-                        if (TJAPlayer3.app.Tx.SongSelect_PapaMama is not null && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Tower && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Dan)
+                        if (TJAPlayer3.app.Tx.SongSelect_PapaMama != null && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Tower && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] != (int)Difficulty.Dan)
                         {
                             for (int i = 0; i < 4; i++)
                             {
@@ -1177,14 +1173,14 @@ internal class CActSelect曲リスト : CActivity
                         }
                         #endregion
                         #region[王冠]
-                        if (TJAPlayer3.app.Tx.Crown_t is not null && TJAPlayer3.app.Tx.DanC_Crown_t is not null)
+                        if (TJAPlayer3.app.Tx.Crown_t != null && TJAPlayer3.app.Tx.DanC_Crown_t != null)
                         {
                             TJAPlayer3.app.Tx.Crown_t.vcScaling = new Vector2(0.25f);
                             if (TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] <= 4)
                             {
                                 for (int i = 0; i < 4; i++)
                                 {
-                                    if (TJAPlayer3.app.Tx.Crown_t is not null && this.r現在選択中のスコア.譜面情報.nCrown[i] >= 0 && this.r現在選択中のスコア.譜面情報.nCrown[i] <= 3)
+                                    if (TJAPlayer3.app.Tx.Crown_t != null && this.r現在選択中のスコア.譜面情報.nCrown[i] >= 0 && this.r現在選択中のスコア.譜面情報.nCrown[i] <= 3)
                                     {
                                         if (i == 3 && TJAPlayer3.stage選曲.n現在選択中の曲の難易度[0] == 4)
                                         {
@@ -1213,17 +1209,17 @@ internal class CActSelect曲リスト : CActivity
                     break;
 
                 case C曲リストノード.ENodeType.BOX:
-                    if (TJAPlayer3.app.Tx.SongSelect_Frame_Box is not null)
+                    if (TJAPlayer3.app.Tx.SongSelect_Frame_Box != null)
                         TJAPlayer3.app.Tx.SongSelect_Frame_Box.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
                     break;
 
                 case C曲リストノード.ENodeType.BACKBOX:
-                    if (TJAPlayer3.app.Tx.SongSelect_Frame_BackBox is not null)
+                    if (TJAPlayer3.app.Tx.SongSelect_Frame_BackBox != null)
                         TJAPlayer3.app.Tx.SongSelect_Frame_BackBox.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
                     break;
 
                 case C曲リストノード.ENodeType.RANDOM:
-                    if (TJAPlayer3.app.Tx.SongSelect_Frame_Random is not null)
+                    if (TJAPlayer3.app.Tx.SongSelect_Frame_Random != null)
                         TJAPlayer3.app.Tx.SongSelect_Frame_Random.t2D描画(TJAPlayer3.app.Device, 450, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY);
                     break;
             }
@@ -1261,15 +1257,15 @@ internal class CActSelect曲リスト : CActivity
 
                 #region [ タイトル名テクスチャを描画。]
                 //-----------------
-                if (this.stバー情報[nパネル番号].song.strTitle != "" && this.ttk選択している曲の曲名 is null)
+                if (this.stバー情報[nパネル番号].song.strTitle != "" && this.ttk選択している曲の曲名 == null)
                     this.ttk選択している曲の曲名 = this.ttk曲名テクスチャを生成する(this.stバー情報[nパネル番号].song.strTitle, Color.White, Color.Black);
-                if (this.stバー情報[nパネル番号].song.arスコア.譜面情報.SubTitle != "" && this.ttk選択している曲のサブタイトル is null)
+                if (this.stバー情報[nパネル番号].song.arスコア.譜面情報.SubTitle != "" && this.ttk選択している曲のサブタイトル == null)
                     this.ttk選択している曲のサブタイトル = this.ttkサブタイトルテクスチャを生成する(this.stバー情報[nパネル番号].song.arスコア.譜面情報.SubTitle);
 
 
-                if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[nnGenreBack] is not null && TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack] is not null)
+                if (TJAPlayer3.app.Tx.SongSelect_Box_Center_Genre[nnGenreBack] != null && TJAPlayer3.app.Tx.SongSelect_Box_Center_Header_Genre[nnGenreBack] != null)
                 {
-                    if (this.ttk選択している曲の曲名 is not null)
+                    if (this.ttk選択している曲の曲名 != null)
                     {
                         if (!(this.r現在選択中の曲.eNodeType == C曲リストノード.ENodeType.BOX && TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre) != 0))
                         {
@@ -1279,7 +1275,7 @@ internal class CActSelect曲リスト : CActivity
 
                     }
                 }
-                else if (this.ttk選択している曲の曲名 is not null)
+                else if (this.ttk選択している曲の曲名 != null)
                 {
                     タイトルtmp = ResolveTitleTexture(this.ttk選択している曲の曲名);
                     タイトルtmp.t2D描画(TJAPlayer3.app.Device, 750, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + TJAPlayer3.app.Skin.SkinConfig.SongSelect.BoxHeaderCorrectionY + 23);
@@ -1287,7 +1283,7 @@ internal class CActSelect曲リスト : CActivity
 
                 //サブタイトルがあったら700
 
-                if (this.ttk選択している曲のサブタイトル is not null)
+                if (this.ttk選択している曲のサブタイトル != null)
                 {
                     サブタイトルtmp = ResolveTitleTexture(ttk選択している曲のサブタイトル);
                     サブタイトルtmp.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Down, 707 + (サブタイトルtmp.szTextureSize.Width / 2), TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY + 430);
@@ -1302,8 +1298,8 @@ internal class CActSelect曲リスト : CActivity
 
         if (this.r現在選択中の曲.eNodeType != C曲リストノード.ENodeType.BOX)
         {
-            int genretextureindex = (this.r現在選択中の曲.r親ノード is not null) ? TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.r親ノード.strGenre) : TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre);
-            if (TJAPlayer3.app.Tx.SongSelect_GenreText is not null)
+            int genretextureindex = (this.r現在選択中の曲.r親ノード != null) ? TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.r親ノード.strGenre) : TJAPlayer3.app.Skin.nStrジャンルtoNum(this.r現在選択中の曲.strGenre);
+            if (TJAPlayer3.app.Tx.SongSelect_GenreText != null)
             {
                 TJAPlayer3.app.Tx.SongSelect_GenreText.t2D拡大率考慮描画(TJAPlayer3.app.Device, CTexture.RefPnt.Center, BoxCenterx, TJAPlayer3.app.Skin.SkinConfig.SongSelect.OverallY - 25, new Rectangle(0, genretextureindex * (TJAPlayer3.app.Tx.SongSelect_GenreText.szTextureSize.Height / (TJAPlayer3.app.Skin.SkinConfig.Genre.Values.Max() + 1)), TJAPlayer3.app.Tx.SongSelect_GenreText.szTextureSize.Width, (TJAPlayer3.app.Tx.SongSelect_GenreText.szTextureSize.Height / (TJAPlayer3.app.Skin.SkinConfig.Genre.Values.Max() + 1))));
             }
@@ -1329,8 +1325,8 @@ internal class CActSelect曲リスト : CActivity
     private CCounter ct分岐フェード用タイマー;
     private CCounter ctバー展開用タイマー;
     private CCounter ctバー展開ディレイ用タイマー;
-    private CCachedFontRenderer? pfMusicName;
-    private CCachedFontRenderer? pfSubtitle;
+    private CCachedFontRenderer pfMusicName;
+    private CCachedFontRenderer pfSubtitle;
     internal CTexture タイトルtmp;
     internal CTexture サブタイトルtmp;
 
@@ -1343,20 +1339,20 @@ internal class CActSelect曲リスト : CActivity
     private int n目標のスクロールカウンタ;
 
     private STバー情報[] stバー情報 = new STバー情報[13];
-    private CTexture? txSongNotFound, txEnumeratingSongs;
-    internal TitleTextureKey? ttk選択している曲の曲名;
-    internal TitleTextureKey? ttk選択している曲のサブタイトル;
+    private CTexture txSongNotFound, txEnumeratingSongs;
+    internal TitleTextureKey ttk選択している曲の曲名;
+    internal TitleTextureKey ttk選択している曲のサブタイトル;
 
     private int nCurrentPosition = 0;
     private int nNumOfItems = 0;
 
     private C曲リストノード r次の曲(C曲リストノード song)
     {
-        if (song is null)
+        if (song == null)
             return null;
 
 
-        List<C曲リストノード> list = (song.r親ノード is not null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide) ? song.r親ノード.list子リスト : TJAPlayer3.SongsManager.list曲ルート;
+        List<C曲リストノード> list = (song.r親ノード != null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide) ? song.r親ノード.list子リスト : TJAPlayer3.SongsManager.list曲ルート;
 
         int index = list.IndexOf(song);
 
@@ -1370,10 +1366,10 @@ internal class CActSelect曲リスト : CActivity
     }
     private C曲リストノード r前の曲(C曲リストノード song)
     {
-        if (song is null)
+        if (song == null)
             return null;
 
-        List<C曲リストノード> list = (song.r親ノード is not null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide) ? song.r親ノード.list子リスト : TJAPlayer3.SongsManager.list曲ルート;
+        List<C曲リストノード> list = (song.r親ノード != null && !TJAPlayer3.app.ConfigToml.SongSelect.OpenOneSide) ? song.r親ノード.list子リスト : TJAPlayer3.SongsManager.list曲ルート;
 
         int index = list.IndexOf(song);
 
@@ -1389,15 +1385,15 @@ internal class CActSelect曲リスト : CActivity
     {
         C曲リストノード song = this.r現在選択中の曲;
 
-        if (song is null)
+        if (song == null)
             return;
 
         for (int i = 0; i < 6; i++)
             song = this.r前の曲(song);
 
-        if (song is null)
+        if (song == null)
         {
-            if (TJAPlayer3.SongsManager.list曲ルート[0] is not null)
+            if (TJAPlayer3.SongsManager.list曲ルート[0] != null)
             {
                 this.r現在選択中の曲 = TJAPlayer3.SongsManager.list曲ルート[0];
                 this.t現在選択中の曲を元に曲バーを再構成する();
@@ -1424,20 +1420,20 @@ internal class CActSelect曲リスト : CActivity
             return;
         const int boxsabun = 10;
 
-        if (Eノード == C曲リストノード.ENodeType.BACKBOX && TJAPlayer3.app.Tx.SongSelect_Bar_BackBox is not null)
+        if (Eノード == C曲リストノード.ENodeType.BACKBOX && TJAPlayer3.app.Tx.SongSelect_Bar_BackBox != null)
         {
             TJAPlayer3.app.Tx.SongSelect_Bar_BackBox.t2D描画(TJAPlayer3.app.Device, x, y);
         }
         else if (Eノード == C曲リストノード.ENodeType.BOX)
         {
-            if (TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre[nジャンル] is not null)
+            if (TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre[nジャンル] != null)
                 TJAPlayer3.app.Tx.SongSelect_Bar_Box_Genre[nジャンル].t2D描画(TJAPlayer3.app.Device, x, y - boxsabun);
-            else if (TJAPlayer3.app.Tx.SongSelect_Bar_Genre[nジャンル] is not null)
+            else if (TJAPlayer3.app.Tx.SongSelect_Bar_Genre[nジャンル] != null)
                 TJAPlayer3.app.Tx.SongSelect_Bar_Genre[nジャンル].t2D描画(TJAPlayer3.app.Device, x, y);
         }
         else
         {
-            if (TJAPlayer3.app.Tx.SongSelect_Bar_Genre[nジャンル] is not null)
+            if (TJAPlayer3.app.Tx.SongSelect_Bar_Genre[nジャンル] != null)
                 TJAPlayer3.app.Tx.SongSelect_Bar_Genre[nジャンル].t2D描画(TJAPlayer3.app.Device, x, y);
         }
     }
@@ -1464,14 +1460,12 @@ internal class CActSelect曲リスト : CActivity
         return texture;
     }
 
-    private static CTexture? GenerateTitleTexture(TitleTextureKey titleTextureKey)
+    private static CTexture GenerateTitleTexture(TitleTextureKey titleTextureKey)
     {
         using (var bmp = titleTextureKey.CCachedFontRenderer.DrawText_V(
             titleTextureKey.str文字, titleTextureKey.forecolor, titleTextureKey.backcolor, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatioVertical))
         {
-            CTexture? tx文字テクスチャ = TJAPlayer3.app.tCreateTexture(bmp);
-            if (tx文字テクスチャ is null)
-                return null;
+            CTexture tx文字テクスチャ = TJAPlayer3.app.tCreateTexture(bmp);
             if (tx文字テクスチャ.szTextureSize.Height > titleTextureKey.maxHeight)
             {
                 tx文字テクスチャ.vcScaling.Y = (float)(((double)titleTextureKey.maxHeight) / tx文字テクスチャ.szTextureSize.Height);
@@ -1549,7 +1543,7 @@ internal class CActSelect曲リスト : CActivity
 
     internal void tアイテム数の描画()
     {
-        if (TJAPlayer3.app.Tx.SongSelect_ItemNumber is null)
+        if (TJAPlayer3.app.Tx.SongSelect_ItemNumber == null)
             return;
 
         const int y = 560;
@@ -1557,7 +1551,7 @@ internal class CActSelect曲リスト : CActivity
 
         int x = 基準x;
 
-        if (TJAPlayer3.app.Tx.SongSelect_ItemNumber_BG is not null)
+        if (TJAPlayer3.app.Tx.SongSelect_ItemNumber_BG != null)
             TJAPlayer3.app.Tx.SongSelect_ItemNumber_BG.t2D描画(TJAPlayer3.app.Device, (TJAPlayer3.app.Tx.SongSelect_ItemNumber.szTextureSize.Width / 11) + 基準x - TJAPlayer3.app.Tx.SongSelect_ItemNumber_BG.szTextureSize.Width, y - (TJAPlayer3.app.Tx.SongSelect_ItemNumber_BG.szTextureSize.Height - TJAPlayer3.app.Tx.SongSelect_ItemNumber.szTextureSize.Height) / 2);
 
         string s = nNumOfItems.ToString();
@@ -1582,7 +1576,7 @@ internal class CActSelect曲リスト : CActivity
     }
     private void tアイテム数の描画_１桁描画(int x, int y, char s数値)
     {
-        if (TJAPlayer3.app.Tx.SongSelect_ItemNumber is null)
+        if (TJAPlayer3.app.Tx.SongSelect_ItemNumber == null)
             return;
 
         int n = (int)s数値 - (int)'0';

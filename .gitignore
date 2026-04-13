@@ -21,4 +21,6 @@
 .DS_Store
 /packages/*
 /Test/*
-/publish/*
+__MACOSX/
+Simulator Screenshot - *.png
+スクリーンショット *.png

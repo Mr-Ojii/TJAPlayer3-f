@@ -458,7 +458,6 @@ internal class CActConfigList : CActivity
         this.list項目リスト.Add(this.iDrumsReturnToMenu);
 
         #region [ AutoPlay ]
-#if PLAYABLE
         this.iTaikoAutoPlay = new CItemToggle( "AUTO PLAY", TJAPlayer3.app.ConfigToml.PlayOption.AutoPlay[0],
             "すべての音符を自動で演奏します。\n" +
             "",
@@ -472,7 +471,6 @@ internal class CActConfigList : CActivity
             "To play both Taiko\n" +
             " automatically." );
         this.list項目リスト.Add( this.iTaikoAutoPlay2P );
-#endif
 
         this.iTaikoAutoRoll = new CItemToggle("AUTO Roll", TJAPlayer3.app.ConfigToml.PlayOption.AutoRoll,
             "OFFにするとAUTO先生が黄色連打を\n" +
@@ -826,7 +824,7 @@ internal class CActConfigList : CActivity
             {
                 using (var bitmap = image.Resize(new SKSizeI(image.Width / 4, image.Height / 4), SKFilterQuality.Medium))
                 {
-                    if (txSkinSample1 is not null)
+                    if (txSkinSample1 != null)
                     {
                         TJAPlayer3.t安全にDisposeする(ref txSkinSample1);
                     }
@@ -963,7 +961,7 @@ internal class CActConfigList : CActivity
         this.eメニュー種別 = Eメニュー種別.Unknown;
 
         #region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
-        int ns = (TJAPlayer3.app.Skin.strSystemSkinSubfolders is null) ? 0 : TJAPlayer3.app.Skin.strSystemSkinSubfolders.Length;
+        int ns = (TJAPlayer3.app.Skin.strSystemSkinSubfolders == null) ? 0 : TJAPlayer3.app.Skin.strSystemSkinSubfolders.Length;
         skinSubFolders = new string[ns];
         for (int i = 0; i < ns; i++)
         {
@@ -1078,15 +1076,15 @@ internal class CActConfigList : CActivity
     /// </summary>
     private void OnListMenuの解放()
     {
-        if (listMenu is not null)
+        if (listMenu != null)
         {
             for (int i = 0; i < listMenu.Length; i++)
             {
-                if (listMenu[i].txParam is not null)
+                if (listMenu[i].txParam != null)
                 {
                     listMenu[i].txParam.Dispose();
                 }
-                if (listMenu[i].txMenuItemRight is not null)
+                if (listMenu[i].txMenuItemRight != null)
                 {
                     listMenu[i].txMenuItemRight.Dispose();
                 }
@@ -1240,13 +1238,13 @@ internal class CActConfigList : CActivity
 
             #region [ 現在の行の項目パネル枠を描画。]
             //-----------------
-            if (TJAPlayer3.app.Tx.Config_ItemBox is not null)
+            if (TJAPlayer3.app.Tx.Config_ItemBox != null)
                 TJAPlayer3.app.Tx.Config_ItemBox.t2D描画(TJAPlayer3.app.Device, x, y);
             //-----------------
             #endregion
             #region [ 現在の行の項目名を描画。]
             //-----------------
-            if (listMenu[nItem].txMenuItemRight is not null)	// 自前のキャッシュに含まれているようなら、再レンダリングせずキャッシュを使用
+            if (listMenu[nItem].txMenuItemRight != null)	// 自前のキャッシュに含まれているようなら、再レンダリングせずキャッシュを使用
             {
                 listMenu[nItem].txMenuItemRight.t2D描画(TJAPlayer3.app.Device, x + 20 + TJAPlayer3.app.Skin.SkinConfig.Config.ItemTextCorrectionX, y + 12 + TJAPlayer3.app.Skin.SkinConfig.Config.ItemTextCorrectionY);
             }
@@ -1314,7 +1312,7 @@ internal class CActConfigList : CActivity
                         if (this.list項目リスト[this.n現在の選択項目] == this.iSystemSkinSubfolder)
                         {
                             tGenerateSkinSample();		// 最初にSkinの選択肢にきたとき(Enterを押す前)に限り、サンプル生成が発生する。
-                            if (txSkinSample1 is not null)
+                            if (txSkinSample1 != null)
                             {
                                 txSkinSample1.t2D描画(TJAPlayer3.app.Device, 124, 409);
                             }
@@ -1338,12 +1336,12 @@ internal class CActConfigList : CActivity
             else
             {
                 int nIndex = this.list項目リスト[nItem].GetIndex();
-                if (listMenu[nItem].nParam != nIndex || listMenu[nItem].txParam is null)
+                if (listMenu[nItem].nParam != nIndex || listMenu[nItem].txParam == null)
                 {
                     stMenuItemRight stm = listMenu[nItem];
                     stm.nParam = nIndex;
                     object o = this.list項目リスト[nItem].objValue();
-                    stm.strParam = (o is null) ? "" : o.ToString();
+                    stm.strParam = (o == null) ? "" : o.ToString();
 
                     using (var bmpStr = prvFont.DrawText(strParam, Color.White, Color.Black, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatio))
                     {
@@ -1387,7 +1385,7 @@ internal class CActConfigList : CActivity
 
             // 描画。
 
-            if (TJAPlayer3.app.Tx.Config_Arrow is not null)
+            if (TJAPlayer3.app.Tx.Config_Arrow != null)
             {
                 TJAPlayer3.app.Tx.Config_Arrow.t2D描画(TJAPlayer3.app.Device, x, y_upper, new Rectangle(0, 0, 0x40, 0x18));
                 TJAPlayer3.app.Tx.Config_Arrow.t2D描画(TJAPlayer3.app.Device, x, y_lower, new Rectangle(0, 0x18, 0x40, 0x18));
@@ -1504,10 +1502,8 @@ internal class CActConfigList : CActivity
     private CItemInteger iDrumsScrollSpeed1P;
     private CItemInteger iDrumsScrollSpeed2P;
     private CItemToggle iDrumsTight;
-#if PLAYABLE
     private CItemToggle iTaikoAutoPlay;
     private CItemToggle iTaikoAutoPlay2P;
-#endif
     private CItemToggle iTaikoAutoRoll;
     private CItemList iTaikoDefaultCourse; //2017.01.30 DD デフォルトでカーソルをあわせる難易度
     private CItemList iTaikoScoreMode;
@@ -1604,7 +1600,7 @@ internal class CActConfigList : CActivity
         TJAPlayer3.app.ConfigToml.PlayOption.Risky = this.iSystemRisky.nValue;										// #23559 2011.7.27 yyagi
 
         TJAPlayer3.app.ConfigToml.General.SkinPath = skinSubFolders[nSkinIndex];				// #28195 2012.5.2 yyagi
-        TJAPlayer3.app.Skin.SetCurrentSkinSubfolderFullName(TJAPlayer3.app.ConfigToml.General._AbsSkinPath, true);
+        TJAPlayer3.app.Skin.SetCurrentSkinSubfolderFullName(TJAPlayer3.app.ConfigToml.General.SkinPath, true);
 
         TJAPlayer3.app.ConfigToml.SoundDevice.DeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
         TJAPlayer3.app.ConfigToml.SoundDevice.WASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.nValue;               // #24820 2013.1.15 yyagi
@@ -1630,10 +1626,8 @@ internal class CActConfigList : CActivity
     }
     private void tConfigIniへ記録する_Drums()
     {
-#if PLAYABLE
         TJAPlayer3.app.ConfigToml.PlayOption.AutoPlay[0] = this.iTaikoAutoPlay.bON;
         TJAPlayer3.app.ConfigToml.PlayOption.AutoPlay[1] = this.iTaikoAutoPlay2P.bON;
-#endif
         TJAPlayer3.app.ConfigToml.PlayOption.AutoRoll = this.iTaikoAutoRoll.bON;
 
         TJAPlayer3.app.ConfigToml.PlayOption.ScrollSpeed[0] = this.iDrumsScrollSpeed1P.nValue;

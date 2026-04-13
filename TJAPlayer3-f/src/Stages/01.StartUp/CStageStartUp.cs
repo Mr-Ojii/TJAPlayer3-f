@@ -57,8 +57,8 @@ internal class CStageStartUp : CStage
                 this.list進行文字列.Add("Release: " + TJAPlayer3.VERSION);
 
                 this.list進行文字列.Add("");
-                this.list進行文字列.Add("TJAPlayer3-f forked TJAPlayer3 (Aioilight)");
-                this.list進行文字列.Add("TJAPlayer3-f edited by Mr-Ojii(@Mr_Ojii)");
+                this.list進行文字列.Add("gamenyoi forked TJAPlayer3 (Aioilight)");
+                this.list進行文字列.Add("gamenyoi edited by Mr-Ojii(@Mr_Ojii)");
                 this.list進行文字列.Add("");
 
                 es = new CEnumSongs();
@@ -127,7 +127,7 @@ internal class CStageStartUp : CStage
             //-----------------
             #endregion
 
-            if (es is not null && es.IsSongListEnumCompletelyDone && TJAPlayer3.app.Tx.IsLoaded)							// 曲リスト作成が終わったら
+            if (es != null && es.IsSongListEnumCompletelyDone && TJAPlayer3.app.Tx.IsLoaded)							// 曲リスト作成が終わったら
             {
                 TJAPlayer3.SongsManager = es.SongsManager;		// 最後に、曲リストを拾い上げる
                 return 1;

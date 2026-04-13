@@ -30,10 +30,9 @@ internal class CAct演奏Drums背景 : CActivity
         this.ct上背景クリアインタイマー = new CCounter[2];
         for (int i = 0; i < 2; i++)
         {
-            CTexture? up = TJAPlayer3.app.Tx.Background_Up[i];
-            if (up is not null)
+            if (TJAPlayer3.app.Tx.Background_Up[i] != null)
             {
-                this.ct上背景スクロール用タイマー[i] = new CCounter(1, up.szTextureSize.Width, 16, TJAPlayer3.app.Timer);
+                this.ct上背景スクロール用タイマー[i] = new CCounter(1, TJAPlayer3.app.Tx.Background_Up[i].szTextureSize.Width, 16, TJAPlayer3.app.Timer);
 
                 switch (TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollPattern[i])
                 {
@@ -47,26 +46,19 @@ internal class CAct演奏Drums背景 : CActivity
                         break;
                     case 3:
                     default:
-                        if (TJAPlayer3.app.Tx.Background_Up_YMove is not null)
-                        {
-                            CTexture? up_ymove = TJAPlayer3.app.Tx.Background_Up_YMove[i];
-                            if (up_ymove is not null)
-                                this.ct上背景上下用タイマー[i] = new CCounter(1, up_ymove.szTextureSize.Width, 6, TJAPlayer3.app.Timer);
-                        }
+                        if (TJAPlayer3.app.Tx.Background_Up_YMove != null)
+                            this.ct上背景上下用タイマー[i] = new CCounter(1, TJAPlayer3.app.Tx.Background_Up_YMove[i].szTextureSize.Width, 6, TJAPlayer3.app.Timer);
                         break;
                 }
 
 
                 this.ct上背景桜用タイマー[i] = new CCounter(0, 400, 8, TJAPlayer3.app.Timer);
-                CTexture? up_sakura = TJAPlayer3.app.Tx.Background_Up_Sakura[i];
-                if (up_sakura is not null)
-                {
-                    this.ct上背景桜スクロール用タイマー[i] = new CCounter(0, up_sakura.szTextureSize.Width, 8, TJAPlayer3.app.Timer);
-                }
+                if (TJAPlayer3.app.Tx.Background_Up_Sakura[i] != null)
+                    this.ct上背景桜スクロール用タイマー[i] = new CCounter(0, TJAPlayer3.app.Tx.Background_Up_Sakura[i].szTextureSize.Width, 8, TJAPlayer3.app.Timer);
                 this.ct上背景クリアインタイマー[i] = new CCounter();
             }
         }
-        if (TJAPlayer3.app.Tx.Background_Down_Scroll is not null)
+        if (TJAPlayer3.app.Tx.Background_Down_Scroll != null)
             this.ct下背景スクロール用タイマー1 = new CCounter(1, TJAPlayer3.app.Tx.Background_Down_Scroll.szTextureSize.Width, 4, TJAPlayer3.app.Timer);
 
         this.ct上背景FIFOタイマー = new CCounter();
@@ -102,30 +94,30 @@ internal class CAct演奏Drums背景 : CActivity
 
         for (int i = 0; i < 2; i++)
         {
-            if (this.ct上背景クリアインタイマー[i] is not null)
+            if (this.ct上背景クリアインタイマー[i] != null)
                 this.ct上背景クリアインタイマー[i].t進行();
         }
         for (int i = 0; i < 2; i++)
         {
-            if (this.ct上背景スクロール用タイマー[i] is not null)
+            if (this.ct上背景スクロール用タイマー[i] != null)
                 this.ct上背景スクロール用タイマー[i].t進行Loop();
         }
         for (int i = 0; i < 2; i++)
         {
-            if (this.ct上背景上下用タイマー[i] is not null)
+            if (this.ct上背景上下用タイマー[i] != null)
                 this.ct上背景上下用タイマー[i].t進行Loop();
         }
         for (int i = 0; i < 2; i++)
         {
-            if (this.ct上背景桜用タイマー[i] is not null)
+            if (this.ct上背景桜用タイマー[i] != null)
                 this.ct上背景桜用タイマー[i].t進行Loop();
         }
         for (int i = 0; i < 2; i++)
         {
-            if (this.ct上背景桜スクロール用タイマー[i] is not null)
+            if (this.ct上背景桜スクロール用タイマー[i] != null)
                 this.ct上背景桜スクロール用タイマー[i].t進行Loop();
         }
-        if (this.ct下背景スクロール用タイマー1 is not null)
+        if (this.ct下背景スクロール用タイマー1 != null)
             this.ct下背景スクロール用タイマー1.t進行Loop();
 
 
@@ -133,81 +125,76 @@ internal class CAct演奏Drums背景 : CActivity
         #region 1P-2P-上背景
         for (int i = 0; i < TJAPlayer3.app.ConfigToml.PlayOption.PlayerCount; i++)
         {
-            if (this.ct上背景スクロール用タイマー[i] is not null)
+            if (this.ct上背景スクロール用タイマー[i] != null)
             {
-                CTexture? up = TJAPlayer3.app.Tx.Background_Up[i];
-                if (up is not null)
+                if (TJAPlayer3.app.Tx.Background_Up[i] != null)
                 {
-                    double TexSize = TJAPlayer3.app.LogicalSize.Width / up.szTextureSize.Width;
+                    double TexSize = TJAPlayer3.app.LogicalSize.Width / TJAPlayer3.app.Tx.Background_Up[i].szTextureSize.Width;
                     // LogicalWidthをテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                     int ForLoop = (int)Math.Ceiling(TexSize) + 1;
                     //int nループ幅 = 328;
-                    up.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
+                    TJAPlayer3.app.Tx.Background_Up[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
                     for (int l = 1; l < ForLoop + 1; l++)
                     {
-                        up.t2D描画(TJAPlayer3.app.Device, +(l * up.szTextureSize.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
+                        TJAPlayer3.app.Tx.Background_Up[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.app.Tx.Background_Up[i].szTextureSize.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
                     }
                 }
-                CTexture? up_clear = TJAPlayer3.app.Tx.Background_Up_Clear[i];
-                if (up_clear is not null)
+                if (TJAPlayer3.app.Tx.Background_Up_Clear[i] != null)
                 {
                     if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i])
-                        up_clear.Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
+                        TJAPlayer3.app.Tx.Background_Up_Clear[i].Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
                     else
-                        up_clear.Opacity = 0;
+                        TJAPlayer3.app.Tx.Background_Up_Clear[i].Opacity = 0;
 
-                    double TexSize = TJAPlayer3.app.LogicalSize.Width / up_clear.szTextureSize.Width;
+                    double TexSize = TJAPlayer3.app.LogicalSize.Width / TJAPlayer3.app.Tx.Background_Up_Clear[i].szTextureSize.Width;
                     // LogicalWidthをテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                     int ForLoop = (int)Math.Ceiling(TexSize) + 1;
 
-                    up_clear.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
+                    TJAPlayer3.app.Tx.Background_Up_Clear[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
                     for (int l = 1; l < ForLoop + 1; l++)
                     {
-                        up_clear.t2D描画(TJAPlayer3.app.Device, (l * up_clear.szTextureSize.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
+                        TJAPlayer3.app.Tx.Background_Up_Clear[i].t2D描画(TJAPlayer3.app.Device, (l * TJAPlayer3.app.Tx.Background_Up_Clear[i].szTextureSize.Width) - this.ct上背景スクロール用タイマー[i].n現在の値, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i]);
                     }
                 }
-                if (this.ct上背景桜用タイマー[i] is not null && this.ct上背景桜スクロール用タイマー[i] is not null)
+                if (this.ct上背景桜用タイマー[i] != null && this.ct上背景桜スクロール用タイマー[i] != null)
                 {
-                    CTexture? up_sakura = TJAPlayer3.app.Tx.Background_Up_Sakura[i];
-                    if (up_sakura is not null)
+                    if (TJAPlayer3.app.Tx.Background_Up_Sakura[i] != null)
                     {
                         int xy = (int)(this.ct上背景桜用タイマー[i].n現在の値 - (this.ct上背景桜用タイマー[i].n終了値 / 2.0));
 
-                        double TexSize = TJAPlayer3.app.LogicalSize.Width / up_sakura.szTextureSize.Width;
+                        double TexSize = TJAPlayer3.app.LogicalSize.Width / TJAPlayer3.app.Tx.Background_Up_Sakura[i].szTextureSize.Width;
                         // LogicalWidthをテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                         int ForLoop = (int)Math.Ceiling(TexSize) + 1;
                         //int nループ幅 = 328;
-                        up_sakura.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
+                        TJAPlayer3.app.Tx.Background_Up_Sakura[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
                         for (int l = 1; l < ForLoop + 1; l++)
                         {
-                            up_sakura.t2D描画(TJAPlayer3.app.Device, +(l * up_sakura.szTextureSize.Width) - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
+                            TJAPlayer3.app.Tx.Background_Up_Sakura[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.app.Tx.Background_Up_Sakura[i].szTextureSize.Width) - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
                         }
                     }
-                    CTexture? up_sakura_clear = TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i];
-                    if (up_sakura_clear is not null)
+                    if (TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i] != null)
                     {
                         if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i])
-                            up_sakura_clear.Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
+                            TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i].Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
                         else
-                            up_sakura_clear.Opacity = 0;
+                            TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i].Opacity = 0;
 
                         int xy = (int)(this.ct上背景桜用タイマー[i].n現在の値 - this.ct上背景桜用タイマー[i].n終了値 / 2.0);
 
-                        double TexSize = TJAPlayer3.app.LogicalSize.Width / up_sakura_clear.szTextureSize.Width;
+                        double TexSize = TJAPlayer3.app.LogicalSize.Width / TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i].szTextureSize.Width;
                         // LogicalWidthをテクスチャサイズで割ったものを切り上げて、プラス+1足す。
                         int ForLoop = (int)Math.Ceiling(TexSize) + 1;
                         //int nループ幅 = 328;
-                        up_sakura_clear.t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
+                        TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i].t2D描画(TJAPlayer3.app.Device, 0 - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
                         for (int l = 1; l < ForLoop + 1; l++)
                         {
-                            up_sakura_clear.t2D描画(TJAPlayer3.app.Device, +(l * up_sakura_clear.szTextureSize.Width) - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
+                            TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.app.Tx.Background_Up_Sakura_Clear[i].szTextureSize.Width) - this.ct上背景桜スクロール用タイマー[i].n現在の値 - xy, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + xy);
                         }
                     }
                 }
-                if (this.ct上背景上下用タイマー[i] is not null)
+                if (this.ct上背景上下用タイマー[i] != null)
                 {
-                    CTexture? up_ymove = TJAPlayer3.app.Tx.Background_Up_YMove[i];
-                    if (up_ymove is not null)
+                    if (TJAPlayer3.app.Tx.Background_Up_YMove[i] != null)
                     {
                         int ym;
                         int xm;
@@ -251,18 +238,18 @@ internal class CAct演奏Drums背景 : CActivity
                                 break;
                         }
 
-                        double TexSize = TJAPlayer3.app.LogicalSize.Width / up_ymove.szTextureSize.Width;
+
+                        double TexSize = TJAPlayer3.app.LogicalSize.Width / TJAPlayer3.app.Tx.Background_Up_YMove[i].szTextureSize.Width;
                         // LogicalWidthをテクスチャサイズで割ったものを切り上げて、プラス+2足す。
                         int ForLoop = (int)Math.Ceiling(TexSize) + 2;
                         //int nループ幅 = 328;
-                        up_ymove.t2D描画(TJAPlayer3.app.Device, 0 - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
+                        TJAPlayer3.app.Tx.Background_Up_YMove[i].t2D描画(TJAPlayer3.app.Device, 0 - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
                         for (int l = 1; l < ForLoop + 1; l++)
                         {
-                            up_ymove.t2D描画(TJAPlayer3.app.Device, +(l * up_ymove.szTextureSize.Width) - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
+                            TJAPlayer3.app.Tx.Background_Up_YMove[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.app.Tx.Background_Up_YMove[i].szTextureSize.Width) - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
                         }
                     }
-                    CTexture? up_ymove_clear = TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i];
-                    if (up_ymove_clear is not null)
+                    if (TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i] != null)
                     {
                         int ym;
                         int xm;
@@ -307,18 +294,18 @@ internal class CAct演奏Drums背景 : CActivity
                         }
 
                         if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[i])
-                            up_ymove_clear.Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
+                            TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i].Opacity = ((this.ct上背景クリアインタイマー[i].n現在の値 * 0xff) / 100);
                         else
-                            up_ymove_clear.Opacity = 0;
+                            TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i].Opacity = 0;
 
-                        double TexSize = TJAPlayer3.app.LogicalSize.Width / up_ymove_clear.szTextureSize.Width;
+                        double TexSize = TJAPlayer3.app.LogicalSize.Width / TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i].szTextureSize.Width;
                         // LogicalWidthをテクスチャサイズで割ったものを切り上げて、プラス+2足す。
                         int ForLoop = (int)Math.Ceiling(TexSize) + 2;
                         //int nループ幅 = 328;
-                        up_ymove_clear.t2D描画(TJAPlayer3.app.Device, 0 - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
+                        TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i].t2D描画(TJAPlayer3.app.Device, 0 - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
                         for (int l = 1; l < ForLoop + 1; l++)
                         {
-                            up_ymove_clear.t2D描画(TJAPlayer3.app.Device, +(l * up_ymove_clear.szTextureSize.Width) - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
+                            TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i].t2D描画(TJAPlayer3.app.Device, +(l * TJAPlayer3.app.Tx.Background_Up_YMove_Clear[i].szTextureSize.Width) - xm, TJAPlayer3.app.Skin.SkinConfig.Game.Background.ScrollY[i] + ym);
                         }
                     }
                 }
@@ -329,14 +316,14 @@ internal class CAct演奏Drums背景 : CActivity
         if (!TJAPlayer3.stage演奏ドラム画面.bDoublePlay)
         {
             {
-                if (TJAPlayer3.app.Tx.Background_Down is not null)
+                if (TJAPlayer3.app.Tx.Background_Down != null)
                 {
                     TJAPlayer3.app.Tx.Background_Down.t2D描画(TJAPlayer3.app.Device, 0, 360);
                 }
             }
             if (TJAPlayer3.stage演奏ドラム画面.bIsAlreadyCleared[0])
             {
-                if (TJAPlayer3.app.Tx.Background_Down_Clear is not null && TJAPlayer3.app.Tx.Background_Down_Scroll is not null)
+                if (TJAPlayer3.app.Tx.Background_Down_Clear != null && TJAPlayer3.app.Tx.Background_Down_Scroll != null)
                 {
                     TJAPlayer3.app.Tx.Background_Down_Clear.Opacity = ((this.ct上背景FIFOタイマー.n現在の値 * 0xff) / 100);
                     TJAPlayer3.app.Tx.Background_Down_Scroll.Opacity = ((this.ct上背景FIFOタイマー.n現在の値 * 0xff) / 100);

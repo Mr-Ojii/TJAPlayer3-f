@@ -99,9 +99,6 @@ internal class CSoundDeviceWASAPI : ISoundDevice
         this.tmSystemTimer = new CTimer();
         this.b最初の実出力遅延算出 = true;
 
-        if (!OperatingSystem.IsWindows())
-            throw new PlatformNotSupportedException("WASAPI is supported on Windows only.");
-
         // BASS の設定。
 
         this.bIsBASSSoundFree = true;
@@ -208,9 +205,9 @@ internal class CSoundDeviceWASAPI : ISoundDevice
         var flags = (mode == EWASAPIMode.Exclusive) ? WasapiInitFlags.AutoFormat | WasapiInitFlags.Exclusive : WasapiInitFlags.Shared | WasapiInitFlags.AutoFormat;
         //var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 
-        if (mode == EWASAPIMode.Shared)
+        if (COS.bIsWin7OrLater() && mode == EWASAPIMode.Shared)
         {
-            flags |= WasapiInitFlags.EventDriven;  // WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
+            flags |= WasapiInitFlags.EventDriven;  // Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
         }
 
         nFreq = deviceInfo.MixFrequency;
@@ -247,7 +244,8 @@ internal class CSoundDeviceWASAPI : ISoundDevice
                 f希望バッファサイズsec = f更新間隔sec * 2;
             }
         }
-        else if (mode == EWASAPIMode.Shared) // low latency shared mode support
+        else
+        if (COS.bIsWin10OrLater() && (mode == EWASAPIMode.Shared))     // Win10 low latency shared mode support
         {
             // バッファ自動設定をユーザーが望む場合は、periodを最小値にする。さもなくば、バッファサイズとしてユーザーが指定した値を、periodとして用いる。
             if (n希望バッファサイズms == 0)

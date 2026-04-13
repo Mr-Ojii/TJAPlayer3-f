@@ -1,5 +1,4 @@
 ﻿using Commons.Music.Midi;
-using CoreMidi;
 
 namespace FDK;
 
@@ -53,7 +52,7 @@ public class CInputManager : IDisposable
                 var midiintmp = MidiAccessManager.Default.OpenInputAsync(midiinlisttmp[i].Id).Result;
                 midiintmp.MessageReceived += onMessageRecevied;
                 this.midiInputs.Add(midiintmp);
-                CInputMIDI item = new CInputMIDI(i, midiinlisttmp[i].Id);
+                CInputMIDI item = new CInputMIDI(uint.Parse(midiinlisttmp[i].Id));
                 this.listInputDevices.Add(item);
             }
         }
@@ -101,7 +100,7 @@ public class CInputManager : IDisposable
     }
     public void tPolling(bool bIsWindowActive)
     {
-        if (CSoundManager.rc演奏用タイマ is not null)
+        if (CSoundManager.rc演奏用タイマ != null)
             lock (this.objMidiIn排他用)
             {
                 //				foreach( IInputDevice device in this.listInputDevices )
@@ -199,19 +198,16 @@ public class CInputManager : IDisposable
         if (CSoundManager.rc演奏用タイマ is not null)
             time = CSoundManager.rc演奏用タイマ.nシステム時刻ms; // lock前に取得。演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 
-        string dev = ((IMidiInput)sender).Details.Id;
+        int dev = int.Parse(((IMidiInput)sender).Details.Id);
 
         lock (this.objMidiIn排他用)
         {
-            if ((this.listInputDevices is not null) && (this.listInputDevices.Count != 0))
+            if ((this.listInputDevices != null) && (this.listInputDevices.Count != 0))
             {
                 foreach (IInputDevice device in this.listInputDevices)
                 {
-                    if (device.eInputDeviceType != EInputDeviceType.MidiIn)
-                        continue;
-
                     CInputMIDI tmidi = (CInputMIDI)device;
-                    if ((tmidi is not null) && (tmidi.GUID == dev))
+                    if ((tmidi != null) && (tmidi.ID == dev))
                     {
                         for (int i = 0; i < e.Length / 3; i++)
                             tmidi.tメッセージからMIDI信号のみ受信(dev, time, e.Data, i);

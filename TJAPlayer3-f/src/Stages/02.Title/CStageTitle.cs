@@ -23,6 +23,8 @@ internal class CStageTitle : CStage
         {
             this.ct上移動用 = new CCounter();
             this.ct下移動用 = new CCounter();
+            this.tタイトルドンちゃん画像を読み込む();
+            this.ctタイトルドンちゃんアニメ = new CCounter(0, Math.Max(this.txタイトルドンちゃん.Length - 1, 0), 40, TJAPlayer3.app.Timer);
 
             string[,] str = new string[,]{
                 { "演奏ゲーム","Taiko Mode"},
@@ -58,6 +60,8 @@ internal class CStageTitle : CStage
         {
             this.ct上移動用 = null;
             this.ct下移動用 = null;
+            this.ctタイトルドンちゃんアニメ = null;
+            this.tタイトルドンちゃん画像を解放する();
             TJAPlayer3.t安全にDisposeする(ref texttexture);
         }
         finally
@@ -94,7 +98,7 @@ internal class CStageTitle : CStage
 
             #region [ カーソル上移動 ]
             //---------------------
-            if (this.ct上移動用 is not null && this.ct上移動用.b進行中)
+            if (this.ct上移動用 != null && this.ct上移動用.b進行中)
             {
                 this.ct上移動用.t進行();
                 if (this.ct上移動用.b終了値に達した)
@@ -106,7 +110,7 @@ internal class CStageTitle : CStage
             #endregion
             #region [ カーソル下移動 ]
             //---------------------
-            if (this.ct下移動用 is not null && this.ct下移動用.b進行中)
+            if (this.ct下移動用 != null && this.ct下移動用.b進行中)
             {
                 this.ct下移動用.t進行();
                 if (this.ct下移動用.b終了値に達した)
@@ -154,12 +158,14 @@ internal class CStageTitle : CStage
 
             // 描画
 
-            if (TJAPlayer3.app.Tx.Title_Background is not null)
+            if (TJAPlayer3.app.Tx.Title_Background != null)
                 TJAPlayer3.app.Tx.Title_Background.t2D描画(TJAPlayer3.app.Device, 0, 0);
+
+            this.tタイトルドンちゃんを描画する();
 
             #region[ バージョン表示 ]
             //string strVersion = "KTT:J:A:I:2017072200";
-            string strCreator = "https://github.com/Mr-Ojii/TJAPlayer3-f";
+            string strCreator = "gamenyoi";
             AssemblyName asmApp = Assembly.GetExecutingAssembly().GetName();
 #if DEBUG
             TJAPlayer3.app.act文字コンソール.tPrint(4, 44, C文字コンソール.EFontType.白, "DEBUG BUILD");
@@ -167,23 +173,23 @@ internal class CStageTitle : CStage
             TJAPlayer3.app.act文字コンソール.tPrint(4, 4, C文字コンソール.EFontType.白, asmApp.Name + " Ver." + TJAPlayer3.VERSION + " (" + strCreator + ")");
             TJAPlayer3.app.act文字コンソール.tPrint(4, 24, C文字コンソール.EFontType.白, "Skin:" + TJAPlayer3.app.Skin.SkinConfig.General.Name + " Ver." + TJAPlayer3.app.Skin.SkinConfig.General.Version + " (" + TJAPlayer3.app.Skin.SkinConfig.General.Creator + ")");
             //CDTXMania.act文字コンソール.tPrint(4, 24, C文字コンソール.EFontType.白, strSubTitle);
-            TJAPlayer3.app.act文字コンソール.tPrint(4, (TJAPlayer3.app.LogicalSize.Height - 24), C文字コンソール.EFontType.白, "TJAPlayer3-f forked TJAPlayer3(AioiLight) forked TJAPlayer2 forPC(kairera0467)");
+            TJAPlayer3.app.act文字コンソール.tPrint(4, (TJAPlayer3.app.LogicalSize.Height - 24), C文字コンソール.EFontType.白, "gamenyoi forked TJAPlayer3(AioiLight) forked TJAPlayer2 forPC(kairera0467)");
             #endregion
 
 
-            if (TJAPlayer3.app.Tx.Title_InBar is not null && TJAPlayer3.app.Tx.Title_AcBar is not null)
+            if (TJAPlayer3.app.Tx.Title_InBar != null && TJAPlayer3.app.Tx.Title_AcBar != null)
             {
                 for (int i = 0; i < 3; i++)
                 {
                     TJAPlayer3.app.Tx.Title_InBar.t2D描画(TJAPlayer3.app.Device, MENU_XT[i] - TJAPlayer3.app.Tx.Title_InBar.szTextureSize.Width / 2, MENU_YT);
                 }
 
-                if (this.ct下移動用 is not null && this.ct下移動用.b進行中)
+                if (this.ct下移動用 != null && this.ct下移動用.b進行中)
                 {
                     TJAPlayer3.app.Tx.Title_AcBar.vcScaling.X = this.ct下移動用.n現在の値 * 0.01f;
                     TJAPlayer3.app.Tx.Title_AcBar.t2D描画(TJAPlayer3.app.Device, MENU_XT[this.n現在のカーソル行] - TJAPlayer3.app.Tx.Title_AcBar.szTextureSize.Width / 2 * this.ct下移動用.n現在の値 * 0.01f, MENU_YT);
                 }
-                else if (this.ct上移動用 is not null && this.ct上移動用.b進行中)
+                else if (this.ct上移動用 != null && this.ct上移動用.b進行中)
                 {
                     TJAPlayer3.app.Tx.Title_AcBar.vcScaling.X = this.ct上移動用.n現在の値 * 0.01f;
                     TJAPlayer3.app.Tx.Title_AcBar.t2D描画(TJAPlayer3.app.Device, MENU_XT[this.n現在のカーソル行] - TJAPlayer3.app.Tx.Title_AcBar.szTextureSize.Width / 2 * this.ct上移動用.n現在の値 * 0.01f, MENU_YT);
@@ -202,7 +208,7 @@ internal class CStageTitle : CStage
                     else
                         tex = texttexture[i + 3];
 
-                    if (tex is not null)
+                    if (tex != null)
                         tex.t2D描画(TJAPlayer3.app.Device, MENU_XT[i] - tex.szTextureSize.Width / 2, MENU_YT + 30);
                 }
             }
@@ -280,7 +286,7 @@ internal class CStageTitle : CStage
 
     #region [ private ]
     //-----------------
-    private CTexture? 文字テクスチャを生成する(string str文字, Color forecolor, Color backcolor, CFontRenderer pf)
+    private CTexture 文字テクスチャを生成する(string str文字, Color forecolor, Color backcolor, CFontRenderer pf)
     {
         using (var bmp = pf.DrawText_V(str文字, forecolor, backcolor, TJAPlayer3.app.Skin.SkinConfig.Font.EdgeRatioVertical))
         {
@@ -288,11 +294,51 @@ internal class CStageTitle : CStage
         }
     }
 
+    private void tタイトルドンちゃん画像を読み込む()
+    {
+        this.tタイトルドンちゃん画像を解放する();
+
+        this.txタイトルドンちゃん = new CTexture?[14];
+        for (int i = 0; i < this.txタイトルドンちゃん.Length; i++)
+        {
+            this.txタイトルドンちゃん[i] = TJAPlayer3.app.Tx.TxC($@"3_SongSelect/2_Chara/{i}.png");
+        }
+    }
+
+    private void tタイトルドンちゃん画像を解放する()
+    {
+        if (this.txタイトルドンちゃん == null)
+            return;
+
+        for (int i = 0; i < this.txタイトルドンちゃん.Length; i++)
+        {
+            this.txタイトルドンちゃん[i]?.Dispose();
+            this.txタイトルドンちゃん[i] = null;
+        }
+    }
+
+    private void tタイトルドンちゃんを描画する()
+    {
+        if (this.ctタイトルドンちゃんアニメ == null || this.txタイトルドンちゃん.Length == 0)
+            return;
+
+        this.ctタイトルドンちゃんアニメ.t進行Loop();
+        CTexture? tx = this.txタイトルドンちゃん[Math.Min(this.ctタイトルドンちゃんアニメ.n現在の値, this.txタイトルドンちゃん.Length - 1)];
+        if (tx == null)
+            return;
+
+        int x = -32;
+        int y = TJAPlayer3.app.LogicalSize.Height - tx.szTextureSize.Height - 180;
+        tx.t2D描画(TJAPlayer3.app.Device, x, y);
+    }
+
     CTexture?[] texttexture = new CTexture?[6];
+    CTexture?[] txタイトルドンちゃん = Array.Empty<CTexture?>();
     private CActFIFOBlack actFI;
     private CActFIFOBlack actFO;
     private CCounter? ct下移動用;
     private CCounter? ct上移動用;
+    private CCounter? ctタイトルドンちゃんアニメ;
     //縦スタイル用
     private readonly int[] MENU_XT = { 300, 640, 980 };
     private const int MENU_YT = 100;
@@ -305,10 +351,10 @@ internal class CStageTitle : CStage
         {
             TJAPlayer3.app.Skin.SystemSounds[Eシステムサウンド.SOUNDカーソル移動音].t再生する();
             this.n現在のカーソル行++;
-            if (this.ct下移動用 is not null)
+            if (this.ct下移動用 != null)
             {
                 this.ct下移動用.t開始(0, 100, 1, TJAPlayer3.app.Timer);
-                if (this.ct上移動用 is not null && this.ct上移動用.b進行中)
+                if (this.ct上移動用 != null && this.ct上移動用.b進行中)
                 {
                     this.ct下移動用.n現在の値 = 100 - this.ct上移動用.n現在の値;
                     this.ct上移動用.t停止();
@@ -322,10 +368,10 @@ internal class CStageTitle : CStage
         {
             TJAPlayer3.app.Skin.SystemSounds[Eシステムサウンド.SOUNDカーソル移動音].t再生する();
             this.n現在のカーソル行--;
-            if (this.ct上移動用 is not null)
+            if (this.ct上移動用 != null)
             {
                 this.ct上移動用.t開始(0, 100, 1, TJAPlayer3.app.Timer);
-                if (this.ct下移動用 is not null && this.ct下移動用.b進行中)
+                if (this.ct下移動用 != null && this.ct下移動用.b進行中)
                 {
                     this.ct上移動用.n現在の値 = 100 - this.ct下移動用.n現在の値;
                     this.ct下移動用.t停止();

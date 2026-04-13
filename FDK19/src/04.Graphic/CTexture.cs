@@ -1,6 +1,5 @@
 ﻿using SDL;
 using SkiaSharp;
-using System.Threading;
 
 namespace FDK;
 
@@ -17,7 +16,7 @@ public unsafe class CTexture : IDisposable
         }
         set
         {
-            if (this.texture is null)
+            if (this.texture == null)
                 return;
 
             this._opacity = Math.Clamp(value, 0, 0xff);
@@ -50,7 +49,7 @@ public unsafe class CTexture : IDisposable
         }
         set
         {
-            if (this.texture is null)
+            if (this.texture == null)
                 return;
 
             this._eBlendMode = value;
@@ -67,7 +66,7 @@ public unsafe class CTexture : IDisposable
     }
     public Vector2 vcScaling;
 
-    private bool bTextureDisposed => this.texture is null;
+    private bool bTextureDisposed => this.texture != null;
 
     // コンストラクタ
 
@@ -118,9 +117,9 @@ public unsafe class CTexture : IDisposable
         {
             this.rcImageRect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
 
-            this.texture = SDL3.SDL_CreateTexture(device.renderer, SDL_PixelFormat.SDL_PIXELFORMAT_ARGB8888, SDL_TextureAccess.SDL_TEXTUREACCESS_TARGET, bitmap.Width, bitmap.Height);
+            this.texture = SDL3.SDL_CreateTexture(device.renderer, SDL_PixelFormatEnum.SDL_PIXELFORMAT_ARGB8888, (int)SDL.SDL_TextureAccess.SDL_TEXTUREACCESS_TARGET, bitmap.Width, bitmap.Height);
 
-            if (this.texture is null)
+            if (this.texture == null)
                 throw new Exception("Failed to create texture.");
 
             //SKColorはArgb8888で格納されるが、無駄コピーが発生するのでどうにかしたい
@@ -144,7 +143,7 @@ public unsafe class CTexture : IDisposable
     // メソッド
     public void UpdateTexture(nint bitmap, Size size)
     {
-        if (texture is null || this.szTextureSize != size)
+        if (texture == null || this.szTextureSize != size)
             return;
 
         SDL_Rect rect = new SDL_Rect()
@@ -250,7 +249,7 @@ public unsafe class CTexture : IDisposable
 
     public void t2D描画(Device device, float x, float y, Rectangle rc画像内の描画領域, EFlipType eFlipType = EFlipType.None)
     {
-        if (this.texture is null)
+        if (this.texture == null)
             return;
 
         dstrect.x = x;
@@ -272,7 +271,7 @@ public unsafe class CTexture : IDisposable
 
     public void t2D幕用描画(Device device, float x, float y, Rectangle rc画像内の描画領域, bool left, int num = 0)
     {
-        if (this.texture is null)
+        if (this.texture == null)
             return;
 
         dstrect.x = x;
@@ -298,7 +297,7 @@ public unsafe class CTexture : IDisposable
         if (!this.bDisposed)
         {
             // テクスチャの破棄
-            if (this.texture is not null)
+            if (this.texture != null)
             {
                 SDL3.SDL_DestroyTexture(this.texture);
                 this.texture = null;
@@ -373,10 +372,8 @@ public unsafe class CTexture : IDisposable
     private EBlendMode _eBlendMode;
     private Color _color;
     private MakeType maketype = MakeType.bytearray;
-    [ThreadStatic]
-    private static SDL_FRect srcrect;
-    [ThreadStatic]
-    private static SDL_FRect dstrect;
+    private SDL_FRect srcrect;
+    private SDL_FRect dstrect;
     //-----------------
     #endregion
 }

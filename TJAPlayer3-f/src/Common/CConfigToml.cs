@@ -63,13 +63,13 @@ public class CConfigToml
             get
             {
                 Uri uriRoot = new Uri(System.IO.Path.Combine(TJAPlayer3.strEXEのあるフォルダ, "System/"));
-                if (_AbsSkinPath == string.Empty)
+                if (_SkinPath == string.Empty)
                 {
                     // Config.iniが空の状態でDTXManiaをViewerとして起動_終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
-                    // → 初期値として Default/ を設定する。
-                    _AbsSkinPath = System.IO.Path.Combine(TJAPlayer3.strEXEのあるフォルダ, "System/Default/");
+                    // → 初期値として Honkehuu/ を設定する。
+                    _SkinPath = System.IO.Path.Combine(TJAPlayer3.strEXEのあるフォルダ, "System/Honkehuu/");
                 }
-                Uri uriPath = new Uri(System.IO.Path.Combine(this._AbsSkinPath, "./"));
+                Uri uriPath = new Uri(System.IO.Path.Combine(this._SkinPath, "./"));
                 string relPath = uriRoot.MakeRelativeUri(uriPath).ToString();				// 相対パスを取得
                 return System.Web.HttpUtility.UrlDecode(relPath);						// デコードする
             }
@@ -88,13 +88,12 @@ public class CConfigToml
                 {
                     absSkinPath += '/';
                 }
-                this._AbsSkinPath = absSkinPath;
+                this._SkinPath = absSkinPath;
             }
         }
-        public string _AbsSkinPath = "";
+        private string _SkinPath = "";
         public string FFmpegPath { get; set; } = "";
-        public string FontName { get; set; } = CFontRenderer.DefaultFontName;
-        public string ScreenShotExt { get; set; } = ".png";
+        public string FontName { get; set; } = @"System/Honkehuu/Graphics/fonts/ipag.ttf";
     }
 
     public CWindow Window { get; set; } = new();
@@ -128,7 +127,7 @@ public class CConfigToml
             get { return _DeviceType; }
             set { _DeviceType = Math.Clamp(value, 0, 4); }
         }
-        private int _DeviceType = (int)(OperatingSystem.IsWindows() ? ESoundDeviceTypeForConfig.WASAPI_Shared : ESoundDeviceTypeForConfig.BASS);
+        private int _DeviceType = (int)(OperatingSystem.IsWindows() ? (COS.bIsWin10OrLater() ? ESoundDeviceTypeForConfig.WASAPI_Shared : ESoundDeviceTypeForConfig.WASAPI_Exclusive) : ESoundDeviceTypeForConfig.BASS);
         public int WASAPIBufferSizeMs
         {
             get { return _WASAPIBufferSizeMs; }
@@ -475,10 +474,6 @@ public class CConfigToml
             sw.WriteLine("# Font name used for font rendering.");
             sw.WriteLine("{0} = \"{1}\"", nameof(this.General.FontName), this.General.FontName);
             sw.WriteLine();
-            sw.WriteLine("# スクリーンショットの拡張子 (\".bmp\" or \".jpg\" or \".png\" or \".webp\")");
-            sw.WriteLine("# Extension for screen shot file. (\".bmp\" or \".jpg\" or \".png\" or \".webp\")");
-            sw.WriteLine("{0} = \"{1}\"", nameof(this.General.ScreenShotExt), this.General.ScreenShotExt);
-            sw.WriteLine();
             sw.WriteLine("[{0}]", nameof(this.Window));
             sw.WriteLine("# フルスクリーンにするか");
             sw.WriteLine("{0} = {1}", nameof(this.Window.FullScreen), this.Window.FullScreen.ToString().ToLowerInvariant());
@@ -772,11 +767,11 @@ public class CConfigToml
             sw.WriteLine("# Fixed score mode");
             sw.WriteLine("{0} = [ {1} ]", nameof(this.PlayOption.Shinuchi), string.Join(", ", this.PlayOption.Shinuchi.Select(x => x.ToString().ToLowerInvariant())));
             sw.WriteLine();
-#if PLAYABLE
+
             sw.WriteLine("# 自動演奏");
-            sw.WriteLine("{0} = [ {1} ]", nameof(this.PlayOption.AutoPlay), string.Join(", ", this.PlayOption.AutoPlay.Select(x => x.ToString().ToLowerInvariant())));
+            sw.WriteLine("{0} = [false, false, false, false ]", nameof(this.PlayOption.AutoPlay), string.Join(", ", this.PlayOption.AutoPlay.Select(x => x.ToString().ToLowerInvariant())));
             sw.WriteLine();
-#endif
+
             sw.WriteLine("# 自動演奏時の連打");
             sw.WriteLine("{0} = {1}", nameof(this.PlayOption.AutoRoll), this.PlayOption.AutoRoll.ToString().ToLowerInvariant());
             sw.WriteLine();
@@ -795,9 +790,11 @@ public class CConfigToml
             sw.WriteLine("[{0}]", nameof(this.JoystickGUID));
             foreach (var pair in JoystickGUID)
             {
+
                 sw.WriteLine("{0} = {1}", pair.Key, $"\"{pair.Value}\"");
             }
             sw.WriteLine();
         }
+
     }
 }

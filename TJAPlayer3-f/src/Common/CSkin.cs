@@ -57,7 +57,7 @@ internal class CSkin : IDisposable
         {
             get
             {
-                if (this.rSound[1 - this.n次に鳴るサウンド番号] is null)
+                if (this.rSound[1 - this.n次に鳴るサウンド番号] == null)
                     return false;
 
                 return this.rSound[1 - this.n次に鳴るサウンド番号].bPlaying;
@@ -68,7 +68,7 @@ internal class CSkin : IDisposable
             get
             {
                 CSound sound = this.rSound[1 - this.n次に鳴るサウンド番号];
-                if (sound is null)
+                if (sound == null)
                     return 0;
 
                 return sound.nPanning;
@@ -76,7 +76,7 @@ internal class CSkin : IDisposable
             set
             {
                 CSound sound = this.rSound[1 - this.n次に鳴るサウンド番号];
-                if (sound is not null)
+                if (sound != null)
                     sound.nPanning = value;
             }
         }
@@ -85,7 +85,7 @@ internal class CSkin : IDisposable
             get
             {
                 CSound sound = this.rSound[this.n次に鳴るサウンド番号];
-                if (sound is null)
+                if (sound == null)
                     return 0;
 
                 return sound.nPanning;
@@ -93,7 +93,7 @@ internal class CSkin : IDisposable
             set
             {
                 CSound sound = this.rSound[this.n次に鳴るサウンド番号];
-                if (sound is not null)
+                if (sound != null)
                     sound.nPanning = value;
             }
         }
@@ -102,7 +102,7 @@ internal class CSkin : IDisposable
             get
             {
                 CSound sound = this.rSound[1 - this.n次に鳴るサウンド番号];
-                if (sound is null)
+                if (sound == null)
                     return 0;
 
                 return sound.AutomationLevel;
@@ -110,7 +110,7 @@ internal class CSkin : IDisposable
             set
             {
                 CSound sound = this.rSound[1 - this.n次に鳴るサウンド番号];
-                if (sound is not null)
+                if (sound != null)
                 {
                     sound.AutomationLevel = value;
                 }
@@ -121,7 +121,7 @@ internal class CSkin : IDisposable
             get
             {
                 CSound sound = this.rSound[1 - this.n次に鳴るサウンド番号];
-                if (sound is null)
+                if (sound == null)
                 {
                     return 0;
                 }
@@ -133,7 +133,7 @@ internal class CSkin : IDisposable
             get
             {
                 CSound sound = this.rSound[this.n次に鳴るサウンド番号];
-                if (sound is null)
+                if (sound == null)
                 {
                     return 0;
                 }
@@ -173,7 +173,7 @@ internal class CSkin : IDisposable
                 Trace.TraceWarning($"ファイルが存在しません。: {this.strFilename}");
                 return;
             }
-            if (TJAPlayer3.SoundManager is null)
+            if (TJAPlayer3.SoundManager == null)
                 throw new Exception("SoundManagerがnullのため、サウンド生成ができません。");
             for (int i = 0; i < 2; i++)     // 一旦Cloneを止めてASIO対応に専念
             {
@@ -206,23 +206,23 @@ internal class CSkin : IDisposable
             }
             if (this.b排他)
             {
-                if (r最後に再生した排他システムサウンド is not null)
+                if (r最後に再生した排他システムサウンド != null)
                     r最後に再生した排他システムサウンド.t停止する();
 
                 r最後に再生した排他システムサウンド = this;
             }
             CSound sound = this.rSound[this.n次に鳴るサウンド番号];
-            if (sound is not null)
+            if (sound != null)
                 sound.t再生を開始する(this.bループ);
 
             this.n次に鳴るサウンド番号 = 1 - this.n次に鳴るサウンド番号;
         }
         public void t停止する()
         {
-            if (this.rSound[0] is not null)
+            if (this.rSound[0] != null)
                 this.rSound[0].t再生を停止する();
 
-            if (this.rSound[1] is not null)
+            if (this.rSound[1] != null)
                 this.rSound[1].t再生を停止する();
 
             if (r最後に再生した排他システムサウンド == this)
@@ -233,7 +233,7 @@ internal class CSkin : IDisposable
         {
             for (int i = 0; i < 2; i++)
             {
-                if (this.rSound[i] is not null)
+                if (this.rSound[i] != null)
                 {
                     TJAPlayer3.SoundManager.RemoveMixer(this.rSound[i]);
                 }
@@ -248,7 +248,7 @@ internal class CSkin : IDisposable
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    if (this.rSound[i] is not null)
+                    if (this.rSound[i] != null)
                     {
                         this.rSound[i].t解放する();
                         this.rSound[i] = null;
@@ -386,22 +386,21 @@ internal class CSkin : IDisposable
     public void SortLoader()
     {
         string strFileName = Path(@"SortConfig.toml");
-        if (!File.Exists(strFileName))
-            return;
-        try
+        if (File.Exists(strFileName))
         {
-            string? str = CJudgeTextEncoding.ReadTextFile(strFileName);
-            if (string.IsNullOrEmpty(str))
-                return;
+            try
+            {
+                string str = CJudgeTextEncoding.ReadTextFile(strFileName);
 
-            var tmpSortList = Toml.ToModel<Dictionary<string, Dictionary<string, int>>>(str);
+                var tmpSortList = Toml.ToModel<Dictionary<string, Dictionary<string, int>>>(str);
 
-            if (tmpSortList.Count != 0)
-                this.SortList = tmpSortList;
-        }
-        catch (Exception e)
-        {
-            Trace.TraceWarning(e.ToString());
+                if (tmpSortList.Count != 0)
+                    this.SortList = tmpSortList;
+            }
+            catch (Exception e)
+            {
+                Trace.TraceWarning(e.ToString());
+            }
         }
     }
 
@@ -440,7 +439,7 @@ internal class CSkin : IDisposable
 
         for (int i = 0; i < nシステムサウンド数; i++)
         {
-            if (this[i] is not null && this[i].b読み込み成功)
+            if (this[i] != null && this[i].b読み込み成功)
             {
                 this[i].t停止する();
                 this[i].Dispose();
@@ -529,17 +528,16 @@ internal class CSkin : IDisposable
             return;
         #endregion
         #region [ カレントのSkinパスが消滅しているので、以下で再設定する。]
-        /// メモ：ここDefaultのままになっているが、変えたほうが良いのではないか。
         /// 以下の優先順位で現在使用中のSkinパスを再設定する。
-        /// 1. System/Default/
+        /// 1. System/Honkehuu/
         /// 2. System/*****/ で最初にenumerateされたもの
         /// 3. System/ (従来互換)
-        #region [ System/Default/ があるなら、そこにカレントSkinパスを設定する]
-        string tempSkinPath_default = System.IO.Path.Combine(strSystemSkinRoot, "Default/");
-        if (Array.BinarySearch(strSystemSkinSubfolders, tempSkinPath_default,
+        #region [ System/Honkehuu/ があるなら、そこにカレントSkinパスを設定する]
+        string preferredSkinPath = System.IO.Path.Combine(strSystemSkinRoot, "Honkehuu/");
+        if (Array.BinarySearch(strSystemSkinSubfolders, preferredSkinPath,
             StringComparer.InvariantCultureIgnoreCase) >= 0)
         {
-            strSystemSkinSubfolderFullName = tempSkinPath_default;
+            strSystemSkinSubfolderFullName = preferredSkinPath;
             return;
         }
         #endregion
@@ -570,9 +568,9 @@ internal class CSkin : IDisposable
     /// </summary>
     /// <param name="skinpath">スキンが格納されたパス名(フルパス)</param>
     /// <returns>スキン名</returns>
-    public static string? GetSkinName(string skinPathFullName)
+    public static string GetSkinName(string skinPathFullName)
     {
-        if (skinPathFullName is not null)
+        if (skinPathFullName != null)
         {
             if (skinPathFullName == "")     // 「box.defで未定義」用
                 skinPathFullName = strSystemSkinSubfolderFullName;
@@ -581,9 +579,9 @@ internal class CSkin : IDisposable
         }
         return null;
     }
-    public static string?[] GetSkinName(string[] skinPathFullNames)
+    public static string[] GetSkinName(string[] skinPathFullNames)
     {
-        string?[] ret = new string[skinPathFullNames.Length];
+        string[] ret = new string[skinPathFullNames.Length];
         for (int i = 0; i < skinPathFullNames.Length; i++)
         {
             ret[i] = GetSkinName(skinPathFullNames[i]);
@@ -592,7 +590,7 @@ internal class CSkin : IDisposable
     }
 
 
-    public string? GetSkinSubfolderFullNameFromSkinName(string skinName)
+    public string GetSkinSubfolderFullNameFromSkinName(string skinName)
     {
         foreach (string s in strSystemSkinSubfolders)
         {
@@ -620,7 +618,7 @@ internal class CSkin : IDisposable
     {
         for (int i = 0; i < nシステムサウンド数; i++)
         {
-            if (this[i] is not null && this[i].b読み込み成功)
+            if (this[i] != null && this[i].b読み込み成功)
             {
                 this[i].t停止する();
                 this[i].tRemoveMixer();
@@ -634,9 +632,8 @@ internal class CSkin : IDisposable
         var skinConfigPath = Path(@"SkinConfig.toml");
         if (!File.Exists(skinConfigPath))
             return;
-        string? strToml = CJudgeTextEncoding.ReadTextFile(skinConfigPath);
-        if (string.IsNullOrEmpty(strToml))
-            return;
+
+        string strToml = CJudgeTextEncoding.ReadTextFile(skinConfigPath);
         TomlModelOptions tomlModelOptions = new()
         {
             ConvertPropertyName = (x) => x,

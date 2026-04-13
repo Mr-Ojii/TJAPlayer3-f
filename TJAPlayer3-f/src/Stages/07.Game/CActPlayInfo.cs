@@ -58,10 +58,10 @@ internal class CActPlayInfo : CActivity
             string.Format("Sound CPU :    {0:####0.00}%", TJAPlayer3.SoundManager.CPUUsage ),
         };
 
-        for (int i = 0; i < infoList.Length; i++)
-        {
-            TJAPlayer3.app.act文字コンソール.tPrint(x, y, C文字コンソール.EFontType.白, infoList[i]);
-            y += 15;
-        }
+// for (int i = 0; i < infoList.Length; i++)
+// {
+//     TJAPlayer3.app.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白, infoList[i]);
+//     y += 15;
+// }
     }
 }

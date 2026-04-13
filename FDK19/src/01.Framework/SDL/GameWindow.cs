@@ -1,4 +1,4 @@
-﻿using System.Buffers;
+﻿using ManagedBass;
 using SDL;
 using SkiaSharp;
 
@@ -18,12 +18,13 @@ public unsafe class GameWindow : IDisposable
         {
             int width, height;
             SDL_RendererLogicalPresentation _rlp;
-            SDL3.SDL_GetRenderLogicalPresentation(_renderer_handle, &width, &height, &_rlp);
+            SDL_ScaleMode _sm;
+            SDL3.SDL_GetRenderLogicalPresentation(_renderer_handle, &width, &height, &_rlp, &_sm);
             return new Size(width, height);
         }
         set
         {
-            SDL3.SDL_SetRenderLogicalPresentation(_renderer_handle, value.Width, value.Height, _renderer_logical_presentation);
+            SDL3.SDL_SetRenderLogicalPresentation(_renderer_handle, value.Width, value.Height, _renderer_logical_presentation, _scale_mode);
         }
     }
 
@@ -87,21 +88,17 @@ public unsafe class GameWindow : IDisposable
     {
         set
         {
-            byte[] arr = ArrayPool<byte>.Shared.Rent((int)value.Length);
-            Span<byte> bytes = new Span<byte>(arr, 0, (int)value.Length);
-            if (value.Read(bytes) > 0)
+            byte[] bytes = new byte[value.Length];
+            value.Read(bytes, 0, bytes.Length);
+            using (SKBitmap bmp = SKBitmap.Decode(bytes))
             {
-                using (SKBitmap bmp = SKBitmap.Decode(bytes))
+                fixed (void* ptr = bmp.Pixels)
                 {
-                    fixed (void* ptr = bmp.Pixels)
-                    {
-                        var surface = SDL3.SDL_CreateSurfaceFrom(bmp.Width, bmp.Height, SDL_PixelFormat.SDL_PIXELFORMAT_ARGB8888, (nint)ptr, bmp.Width * 4);
-                        SDL3.SDL_SetWindowIcon(_window_handle, surface);
-                        SDL3.SDL_DestroySurface(surface);
-                    }
+                    var surface = SDL3.SDL_CreateSurfaceFrom((nint)ptr, bmp.Width, bmp.Height, bmp.Width * 4, SDL_PixelFormatEnum.SDL_PIXELFORMAT_ARGB8888);
+                    SDL3.SDL_SetWindowIcon(_window_handle, surface);
+                    SDL3.SDL_DestroySurface(surface);
                 }
             }
-            ArrayPool<byte>.Shared.Return(arr);
         }
     }
 
@@ -113,7 +110,7 @@ public unsafe class GameWindow : IDisposable
         }
         set
         {
-            SDL3.SDL_SetWindowFullscreen(_window_handle, value);
+            SDL3.SDL_SetWindowFullscreen(_window_handle, value ? SDL_bool.SDL_TRUE : SDL_bool.SDL_FALSE);
             _full_screen = value;
         }
     }
@@ -123,7 +120,9 @@ public unsafe class GameWindow : IDisposable
     {
         get
         {
-            string? _renderer_name = SDL3.SDL_GetRendererName(this._renderer_handle);
+            SDL_RendererInfo info;
+            SDL3.SDL_GetRendererInfo(this._renderer_handle, &info);
+            string? _renderer_name = Marshal.PtrToStringUTF8((nint)info.name);
             if (_renderer_name is null)
                 return "null";
             else
@@ -140,19 +139,19 @@ public unsafe class GameWindow : IDisposable
     {
         SDL3.SDL_Init(SDL_InitFlags.SDL_INIT_VIDEO | SDL_InitFlags.SDL_INIT_JOYSTICK);
         _window_handle = SDL3.SDL_CreateWindow(title, width, height, SDL_WindowFlags.SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL_WindowFlags.SDL_WINDOW_RESIZABLE);
-        if (_window_handle is null)
+        if (_window_handle == null)
             throw new Exception("Failed to create window.");
 
         _window_id = SDL3.SDL_GetWindowID(_window_handle);
 
         _renderer_handle = SDL3.SDL_CreateRenderer(_window_handle, (byte*)null);
-        if (_renderer_handle is null)
+        if (_renderer_handle == null)
         {
             SDL3.SDL_DestroyWindow(_window_handle);
             throw new Exception("Failed to create renderer.");
         }
         this.Device = new Device(_window_handle, _renderer_handle);
-        SDL3.SDL_SetRenderLogicalPresentation(_renderer_handle, width, height, _renderer_logical_presentation);
+        SDL3.SDL_SetRenderLogicalPresentation(_renderer_handle, width, height, _renderer_logical_presentation, _scale_mode);
     }
 
     public void Run()
@@ -168,7 +167,7 @@ public unsafe class GameWindow : IDisposable
 
             this.OnRenderFrame(new EventArgs());
 
-            while (SDL3.SDL_PollEvent(&poll_event))
+            while (SDL3.SDL_PollEvent(&poll_event) != 0)
             {
                 switch ((SDL_EventType)poll_event.type)
                 {
@@ -239,36 +238,7 @@ public unsafe class GameWindow : IDisposable
         unsafe
         {
             SDL_Surface* sshot = SDL3.SDL_RenderReadPixels(this._renderer_handle, null);
-            if (strFullPath.EndsWith("bmp"))
-                SDL3.SDL_SaveBMP(sshot, strFullPath);
-            else
-            {
-                SKEncodedImageFormat fmt = SKEncodedImageFormat.Png;
-                if (strFullPath.EndsWith("jpg") || strFullPath.EndsWith("jpeg"))
-                    fmt = SKEncodedImageFormat.Jpeg;
-                else if (strFullPath.EndsWith("webp"))
-                    fmt = SKEncodedImageFormat.Webp;
-
-                var io = SDL3.SDL_IOFromDynamicMem();
-                if (SDL3.SDL_SaveBMP_IO(sshot, io, false))
-                {
-                    var io_size = SDL3.SDL_GetIOSize(io);
-                    byte[] arr = ArrayPool<byte>.Shared.Rent((int)io_size);
-                    SDL3.SDL_SeekIO(io, 0, SDL_IOWhence.SDL_IO_SEEK_SET);
-                    fixed (byte* ptr = arr)
-                        SDL3.SDL_ReadIO(io, (nint)ptr, (nuint)io_size);
-                    using (var bmp = SKBitmap.Decode(arr))
-                    {
-                        using (var str = File.Create(strFullPath))
-                        {
-                            var data = bmp.Encode(fmt, 100);
-                            data.SaveTo(str);
-                        }
-                    }
-                    ArrayPool<byte>.Shared.Return(arr);
-                }
-                SDL3.SDL_CloseIO(io);
-            }
+            SDL3.SDL_SaveBMP(sshot, strFullPath);
             SDL3.SDL_DestroySurface(sshot);
         }
 
@@ -309,4 +279,5 @@ public unsafe class GameWindow : IDisposable
     private bool _focused;
 
     private const SDL_RendererLogicalPresentation _renderer_logical_presentation = SDL_RendererLogicalPresentation.SDL_LOGICAL_PRESENTATION_LETTERBOX;
+    private const SDL_ScaleMode _scale_mode = SDL_ScaleMode.SDL_SCALEMODE_LINEAR;
 }

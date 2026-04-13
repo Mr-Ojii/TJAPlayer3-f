@@ -3,9 +3,9 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
 
-    <AssemblyName>TJAPlayer3-f</AssemblyName>
+    <AssemblyName>gamenyoi</AssemblyName>
     <RootNamespace>TJAPlayer3</RootNamespace>
-    <ApplicationIcon>TJAPlayer3-f.ico</ApplicationIcon>
+    <ApplicationIcon>Gamenyoi.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,13 +25,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
+    <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
     <PackageReference Include="LargeAddressAware" Version="1.0.6" />
-    <PackageReference Include="Tomlyn" Version="0.19.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="4.14.0" />
+    <PackageReference Include="Tomlyn" Version="0.17.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4" />
   </ItemGroup>
   <ItemGroup Label="Resources">
-    <EmbeddedResource Include="TJAPlayer3-f.ico" />
+    <EmbeddedResource Include="Gamenyoi.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FDK19\FDK19.csproj" />
@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>TJAPlayer3-f</PackageId>
+    <PackageId>gamenyoi</PackageId>
     <Version>1.8.2.1</Version>
     <Authors>Mr-Ojii</Authors>
     <NeutralLanguage>ja-JP</NeutralLanguage>

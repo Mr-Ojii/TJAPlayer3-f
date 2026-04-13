@@ -525,7 +525,7 @@ public class CSound : IDisposable
                     this.hGC = default(GCHandle);
                 }
             }
-            if (this.byArrWAVファイルイメージ is not null)
+            if (this.byArrWAVファイルイメージ != null)
             {
                 this.byArrWAVファイルイメージ = null;
             }

@@ -49,7 +49,7 @@ internal class TJAPlayer3 : Game
         {
             for (int nPlayer = 0; nPlayer < 2; nPlayer++)
             {
-                if ((dtx[nPlayer] is not null) && (app is not null))
+                if ((dtx[nPlayer] != null) && (app != null))
                 {
                     dtx[nPlayer].On非活性化();
                     app.listトップレベルActivities.Remove(dtx[nPlayer]);
@@ -58,7 +58,7 @@ internal class TJAPlayer3 : Game
             dtx = value;
             for (int nPlayer = 0; nPlayer < 2; nPlayer++)
             {
-                if ((dtx[nPlayer] is not null) && (app is not null))
+                if ((dtx[nPlayer] != null) && (app != null))
                 {
                     app.listトップレベルActivities.Add(dtx[nPlayer]);
                 }
@@ -219,7 +219,7 @@ internal class TJAPlayer3 : Game
     // コンストラクタ
 
     public TJAPlayer3()
-        : base("TJAPlayer3-f", 1280, 720)
+        : base("gamenyoi", 1280, 720)
     {
         TJAPlayer3.app = this;
 
@@ -250,7 +250,7 @@ internal class TJAPlayer3 : Game
         #region [ ログ出力開始 ]
         //---------------------
         Trace.AutoFlush = true;
-        Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(Path.Combine(strEXEのあるフォルダ, "TJAPlayer3-f.log"), false, new UTF8Encoding(false))));
+        Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(Path.Combine(strEXEのあるフォルダ, "gamenyoi.log"), false, new UTF8Encoding(false))));
 
         Trace.WriteLine("");
         Trace.WriteLine("DTXMania powered by YAMAHA Silent Session Drums");
@@ -283,7 +283,7 @@ internal class TJAPlayer3 : Game
             currentClientSize = new Size(ConfigToml.Window.Width, ConfigToml.Window.Height);
         }
 
-        var icon_stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TJAPlayer3.TJAPlayer3-f.ico");
+        var icon_stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TJAPlayer3.Gamenyoi.ico");
         if (icon_stream is not null)
             base.Icon = icon_stream;
         base.MouseWheel += this.Window_MouseWheel;
@@ -308,7 +308,7 @@ internal class TJAPlayer3 : Game
         Trace.Indent();
         try
         {
-            Skin = new CSkin(TJAPlayer3.app.ConfigToml.General._AbsSkinPath);
+            Skin = new CSkin(TJAPlayer3.app.ConfigToml.General.SkinPath);
             TJAPlayer3.app.ConfigToml.General.SkinPath = TJAPlayer3.app.Skin.GetCurrentSkinSubfolderFullName(true);    // 旧指定のSkinフォルダが消滅していた場合に備える
             this.LogicalSize = new Size(Skin.SkinConfig.General.Width, Skin.SkinConfig.General.Height);
             Trace.TraceInformation("スキンの初期化を完了しました。");
@@ -585,7 +585,7 @@ internal class TJAPlayer3 : Game
 
     public void t全画面_ウィンドウモード切り替え()
     {
-        if ((ConfigToml is not null) && (ConfigToml.Window.FullScreen != this.FullScreen))
+        if ((ConfigToml != null) && (ConfigToml.Window.FullScreen != this.FullScreen))
         {
             if (ConfigToml.Window.FullScreen)   // #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
             {
@@ -631,7 +631,7 @@ internal class TJAPlayer3 : Game
         InputManager?.tSwapEventList();
         FPS.tUpdateCounter();
 
-        if (this.Device is null)
+        if (this.Device == null)
             return;
 
         // #xxxxx 2013.4.8 yyagi; sleepの挿入位置を、EndScnene～Present間から、BeginScene前に移動。描画遅延を小さくするため。
@@ -646,9 +646,9 @@ internal class TJAPlayer3 : Game
         }
         #endregion
 
-        if (r現在のステージ is not null)
+        if (r現在のステージ != null)
         {
-            this.n進行描画の戻り値 = (r現在のステージ is not null) ? r現在のステージ.On進行描画() : 0;
+            this.n進行描画の戻り値 = (r現在のステージ != null) ? r現在のステージ.On進行描画() : 0;
 
             #region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
             actEnumSongs.On進行描画();                          // "Enumerating Songs..."アイコンの描画
@@ -658,7 +658,7 @@ internal class TJAPlayer3 : Game
                 case CStage.EStage.Config:
                 case CStage.EStage.SongSelect:
                 case CStage.EStage.SongLoading:
-                    if (EnumSongs is not null)
+                    if (EnumSongs != null)
                     {
                         #region [ (特定条件時) 曲検索スレッドの起動_開始 ]
                         if (r現在のステージ.eStageID == CStage.EStage.Title &&
@@ -692,7 +692,7 @@ internal class TJAPlayer3 : Game
 
                         #region [ 曲探索中断待ち待機 ]
                         if (r現在のステージ.eStageID == CStage.EStage.SongLoading && !EnumSongs.IsSongListEnumCompletelyDone &&
-                            EnumSongs.thDTXFileEnumerate is not null)                           // #28700 2012.6.12 yyagi; at Compact mode, enumerating thread does not exist.
+                            EnumSongs.thDTXFileEnumerate != null)                           // #28700 2012.6.12 yyagi; at Compact mode, enumerating thread does not exist.
                         {
                             EnumSongs.WaitUntilSuspended();                                 // 念のため、曲検索が一時中断されるまで待機
                         }
@@ -934,7 +934,7 @@ internal class TJAPlayer3 : Game
                         if (this.n進行描画の戻り値 == (int)E曲読込画面の戻り値.読込中止)
                         {
                             //DTX.t全チップの再生停止();
-                            if (DTX[0] is not null)
+                            if (DTX[0] != null)
                                 DTX[0].On非活性化();
                             Trace.TraceInformation("曲の読み込みを中止しました。");
                             this.tガベージコレクションを実行する();
@@ -1118,7 +1118,7 @@ internal class TJAPlayer3 : Game
 
             actScanningLoudness.On進行描画();
 
-            if (r現在のステージ is not null && r現在のステージ.eStageID != CStage.EStage.StartUp && TJAPlayer3.app.Tx.Network_Connection is not null)
+            if (r現在のステージ != null && r現在のステージ.eStageID != CStage.EStage.StartUp && TJAPlayer3.app.Tx.Network_Connection != null)
             {
                 if (Math.Abs(CSoundManager.rc演奏用タイマ.nシステム時刻ms - this.前回のシステム時刻ms) > 10000)
                 {
@@ -1140,7 +1140,7 @@ internal class TJAPlayer3 : Game
                 TJAPlayer3.app.Tx.Network_Connection.t2D描画(app.Device, this.LogicalSize.Width - (TJAPlayer3.app.Tx.Network_Connection.szTextureSize.Width / 2), this.LogicalSize.Height - TJAPlayer3.app.Tx.Network_Connection.szTextureSize.Height, new Rectangle((TJAPlayer3.app.Tx.Network_Connection.szTextureSize.Width / 2) * (this.bネットワークに接続中 ? 0 : 1), 0, TJAPlayer3.app.Tx.Network_Connection.szTextureSize.Width / 2, TJAPlayer3.app.Tx.Network_Connection.szTextureSize.Height));
             }
             // オーバレイを描画する(テクスチャの生成されていない起動ステージは例外
-            if (r現在のステージ is not null && r現在のステージ.eStageID != CStage.EStage.StartUp && TJAPlayer3.app.Tx.Overlay is not null)
+            if (r現在のステージ != null && r現在のステージ.eStageID != CStage.EStage.StartUp && TJAPlayer3.app.Tx.Overlay != null)
             {
                 TJAPlayer3.app.Tx.Overlay.t2D描画(app.Device, 0, 0);
             }
@@ -1155,13 +1155,13 @@ internal class TJAPlayer3 : Game
                     // Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
                     string strFullPath =
                         Path.Combine(TJAPlayer3.strEXEのあるフォルダ, "Capture_img");
-                    strFullPath = Path.Combine(strFullPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ConfigToml.General.ScreenShotExt);
+                    strFullPath = Path.Combine(strFullPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ".bmp");
                     this.SaveScreen(strFullPath);
                 }
             if (ConfigIni.KeyAssign.FullScreen[i].Code > 0)
                 if (InputManager.Keyboard.bIsKeyPressed((int)ConfigIni.KeyAssign.FullScreen[i].Code))
                 {
-                    if (ConfigToml is not null)
+                    if (ConfigToml != null)
                     {
                         ConfigToml.Window.FullScreen = !ConfigToml.Window.FullScreen;
                         this.t全画面_ウィンドウモード切り替え();
@@ -1170,7 +1170,7 @@ internal class TJAPlayer3 : Game
         }
         if ((InputManager.Keyboard.bIsKeyDown((int)SlimDXKeys.Key.LeftAlt) || InputManager.Keyboard.bIsKeyDown((int)SlimDXKeys.Key.RightAlt)) && InputManager.Keyboard.bIsKeyPressed((int)SlimDXKeys.Key.Return))
         {
-            if (ConfigToml is not null)
+            if (ConfigToml != null)
             {
                 ConfigToml.Window.FullScreen = !ConfigToml.Window.FullScreen;
                 this.t全画面_ウィンドウモード切り替え();
@@ -1266,7 +1266,7 @@ internal class TJAPlayer3 : Game
     /// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
     public static void t安全にDisposeする<T>(ref T? obj) where T : class, IDisposable //2020.06.06 Mr-Ojii twopointzero氏のソースコードをもとに改良
     {
-        if (obj is null)
+        if (obj == null)
             return;
 
         obj.Dispose();
@@ -1275,7 +1275,7 @@ internal class TJAPlayer3 : Game
 
     public static void t安全にDisposeする<T>(ref T?[] array) where T : class, IDisposable //2020.08.01 Mr-Ojii twopointzero氏のソースコードをもとに追加
     {
-        if (array is null)
+        if (array == null)
         {
             return;
         }
@@ -1321,7 +1321,7 @@ internal class TJAPlayer3 : Game
     /// <returns>曲名テクスチャの縮小倍率。そのテクスチャがnullならば一倍(1f)を返す。</returns>
     public static float GetSongNameXScaling(ref CTexture cTexture, int samePixel = 660)
     {
-        if (cTexture is null) return 1f;
+        if (cTexture == null) return 1f;
         float scalingRate = (float)samePixel / (float)cTexture.szTextureSize.Width;
         if (cTexture.szTextureSize.Width <= samePixel)
             scalingRate = 1.0f;
@@ -1368,7 +1368,7 @@ internal class TJAPlayer3 : Game
             Trace.TraceInformation("■ アプリケーションの終了");
             #region [ 曲検索の終了処理 ]
             //---------------------
-            if (actEnumSongs is not null)
+            if (actEnumSongs != null)
             {
                 Trace.TraceInformation("曲検索actの終了処理を行います。");
                 Trace.Indent();
@@ -1392,7 +1392,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ 現在のステージの終了処理 ]
             //---------------------
-            if (TJAPlayer3.r現在のステージ is not null && TJAPlayer3.r現在のステージ.b活性化してる)		// #25398 2011.06.07 MODIFY FROM
+            if (TJAPlayer3.r現在のステージ != null && TJAPlayer3.r現在のステージ.b活性化してる)		// #25398 2011.06.07 MODIFY FROM
             {
                 Trace.TraceInformation("現在のステージを終了します。");
                 Trace.Indent();
@@ -1413,7 +1413,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ 曲リストの終了処理 ]
             //---------------------
-            if (SongsManager is not null)
+            if (SongsManager != null)
             {
                 Trace.TraceInformation("曲リストの終了処理を行います。");
                 Trace.Indent();
@@ -1439,7 +1439,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ スキンの終了処理 ]
             //---------------------
-            if (Skin is not null)
+            if (Skin != null)
             {
                 Trace.TraceInformation("スキンの終了処理を行います。");
                 Trace.Indent();
@@ -1463,7 +1463,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ サウンドの終了処理 ]
             //---------------------
-            if (SoundManager is not null)
+            if (SoundManager != null)
             {
                 Trace.TraceInformation("サウンド の終了処理を行います。");
                 Trace.Indent();
@@ -1487,7 +1487,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ パッドの終了処理 ]
             //---------------------
-            if (Pad is not null)
+            if (Pad != null)
             {
                 Trace.TraceInformation("パッドの終了処理を行います。");
                 Trace.Indent();
@@ -1510,7 +1510,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ InputManagerの終了処理 ]
             //---------------------
-            if (InputManager is not null)
+            if (InputManager != null)
             {
                 Trace.TraceInformation("InputManagerの終了処理を行います。");
                 Trace.Indent();
@@ -1535,7 +1535,7 @@ internal class TJAPlayer3 : Game
             #endregion
             #region [ 文字コンソールの終了処理 ]
             //---------------------
-            if (act文字コンソール is not null)
+            if (act文字コンソール != null)
             {
                 Trace.TraceInformation("文字コンソールの終了処理を行います。");
                 Trace.Indent();
@@ -1563,7 +1563,7 @@ internal class TJAPlayer3 : Game
             Trace.Indent();
             try
             {
-                if (FPS is not null)
+                if (FPS != null)
                 {
                     FPS = null;
                 }
@@ -1581,7 +1581,7 @@ internal class TJAPlayer3 : Game
             Trace.Indent();
             try
             {
-                if (Timer is not null)
+                if (Timer != null)
                 {
                     Timer.Dispose();
                     Timer = null;
@@ -1678,7 +1678,7 @@ internal class TJAPlayer3 : Game
 
         TJAPlayer3.app.Skin.Dispose();
         TJAPlayer3.app.Skin = null;
-        TJAPlayer3.app.Skin = new CSkin(TJAPlayer3.app.ConfigToml.General._AbsSkinPath);
+        TJAPlayer3.app.Skin = new CSkin(TJAPlayer3.app.ConfigToml.General.SkinPath);
 
 
         TJAPlayer3.app.Tx.DisposeTexture();

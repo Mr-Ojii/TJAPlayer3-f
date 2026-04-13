@@ -59,7 +59,7 @@ public static class LoudnessMetadataScanner
     {
         var scanningThread = ScanningThread;
 
-        if (scanningThread is null)
+        if (scanningThread == null)
         {
             return;
         }
@@ -138,7 +138,7 @@ public static class LoudnessMetadataScanner
         var integratedLufsNode = trackNavigator?.SelectSingleNode(@"integrated/@lufs");
         var truePeakTpfsNode = trackNavigator?.SelectSingleNode(@"true-peak/@tpfs");
 
-        if (trackNavigator is null || integratedLufsNode is null || truePeakTpfsNode is null)
+        if (trackNavigator == null || integratedLufsNode == null || truePeakTpfsNode == null)
         {
             var tracePrefix = $"{nameof(LoudnessMetadataScanner)}.{nameof(LoadFromMetadataPath)}";
             Trace.TraceWarning($"{tracePrefix}: Encountered incorrect xml element structure while parsing {loudnessMetadataPath}. Returning null...");
@@ -174,7 +174,7 @@ public static class LoudnessMetadataScanner
             // scrolling through songs and previewing them. Their current interests should drive
             // scanning priorities, and it is for this reason that a stack is used instead of a queue.
             var semaphore = Semaphore;
-            if (semaphore is not null && (Jobs.Count == 0 || Jobs.Peek() != absoluteBgmPath))
+            if (semaphore != null && (Jobs.Count == 0 || Jobs.Peek() != absoluteBgmPath))
             {
                 Jobs.Push(absoluteBgmPath);
                 semaphore.Release();
@@ -192,7 +192,7 @@ public static class LoudnessMetadataScanner
 
                 Semaphore?.WaitOne();
 
-                if (ScanningThread is null)
+                if (ScanningThread == null)
                 {
                     return;
                 }
@@ -304,7 +304,7 @@ public static class LoudnessMetadataScanner
 
             process.OutputDataReceived += (s, e) =>
             {
-                if (e.Data is not null)
+                if (e.Data != null)
                 {
                     stdoutWriter.Write(e.Data);
                     stdoutWriter.Write(Environment.NewLine);
@@ -314,7 +314,7 @@ public static class LoudnessMetadataScanner
             var errorDataReceived = false;
             process.ErrorDataReceived += (s, e) =>
             {
-                if (e.Data is not null)
+                if (e.Data != null)
                 {
                     errorDataReceived = true;
                     stderrWriter.Write(e.Data);

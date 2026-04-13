@@ -20,7 +20,7 @@ internal class CEnumSongs							// #27060 2011.2.7 yyagi 曲リストを取得�
     {
         get
         {
-            if (thDTXFileEnumerate is null)
+            if (thDTXFileEnumerate == null)
             {
                 return false;
             }
@@ -98,7 +98,7 @@ internal class CEnumSongs							// #27060 2011.2.7 yyagi 曲リストを取得�
             }
             // this.autoReset = new AutoResetEvent( true );
 
-            if (this.SongsManager is null)		// Enumerating Songs完了後、CONFIG画面から再スキャンしたときにこうなる
+            if (this.SongsManager == null)		// Enumerating Songs完了後、CONFIG画面から再スキャンしたときにこうなる
             {
                 this.SongsManager = new CSongsManager();
             }
@@ -237,7 +237,7 @@ internal class CEnumSongs							// #27060 2011.2.7 yyagi 曲リストを取得�
                 {
                     CSongsManager s = new CSongsManager();
                     s = Deserialize(strPathSongList);		// 直接this.SongsManagerにdeserialize()結果を代入するのは避ける。nullにされてしまうことがあるため。
-                    if (s is not null)
+                    if (s != null)
                     {
                         this.SongsManager = s;
                     }
@@ -497,7 +497,7 @@ internal class CEnumSongs							// #27060 2011.2.7 yyagi 曲リストを取得�
     {
         foreach (C曲リストノード c in cs)
         {
-            if (c.eNodeType == C曲リストノード.ENodeType.BOX && c.list子リスト is not null)
+            if (c.eNodeType == C曲リストノード.ENodeType.BOX && c.list子リスト != null)
             {
                 親ノードを設定する(ref c.list子リスト, c);//再帰
             }

@@ -235,7 +235,7 @@ internal class CDTX : CActivity
             if (this.nチャンネル番号 == 0x01)       // WAV
             {
                 if (TJAPlayer3.DTX[0].listWAV.TryGetValue(this.n整数値_内部番号, out var wc))
-                    nDuration = (wc.rSound is null) ? 0 : wc.rSound.nDurationms;
+                    nDuration = (wc.rSound == null) ? 0 : wc.rSound.nDurationms;
             }
             else if (this.nチャンネル番号 == 0x54)
             {
@@ -337,7 +337,7 @@ internal class CDTX : CActivity
 
             if (bManagedリソースの解放も行う)
             {
-                if (this.rSound is not null)
+                if (this.rSound != null)
                     this.rSound.t解放する();
                 this.rSound = null;
 
@@ -576,7 +576,7 @@ internal class CDTX : CActivity
 
     public void tAVIの読み込み()
     {
-        if (this.listVD is not null)
+        if (this.listVD != null)
         {
             foreach (CVideoDecoder cvd in this.listVD.Values)
             {
@@ -595,9 +595,9 @@ internal class CDTX : CActivity
     }
     public void tWave再生位置自動補正(CWAV wc)
     {
-        if (wc.rSound is not null && wc.rSound.nDurationms >= 5000)
+        if (wc.rSound != null && wc.rSound.nDurationms >= 5000)
         {
-            if ((wc.rSound is not null) && (wc.rSound.bPlaying))
+            if ((wc.rSound != null) && (wc.rSound.bPlaying))
             {
                 long nCurrentTime = CSoundManager.rc演奏用タイマ.nシステム時刻ms;
                 if (nCurrentTime > wc.n再生開始時刻)
@@ -626,7 +626,7 @@ internal class CDTX : CActivity
     {
         if (this.listWAV.TryGetValue(nWaveの内部番号, out CWAV cwav))
         {
-            if (cwav.rSound is not null && cwav.rSound.bPlaying)
+            if (cwav.rSound != null && cwav.rSound.bPlaying)
             {
                 if (bミキサーからも削除する)
                 {
@@ -764,7 +764,7 @@ internal class CDTX : CActivity
             if (this.listWAV.TryGetValue(pChip.n整数値_内部番号, out CWAV wc))
             {
                 CSound sound = wc.rSound;
-                if (sound is not null)
+                if (sound != null)
                 {
                     sound.dbPlaySpeed = ((double)TJAPlayer3.app.ConfigToml.PlayOption.PlaySpeed) / 20.0;
                     // 再生速度によって、WASAPI/ASIOで使う使用mixerが決まるため、付随情報の設定(音量/PAN)は、再生速度の設定後に行う
@@ -802,7 +802,7 @@ internal class CDTX : CActivity
         }
         foreach (CWAV cwav in this.listWAV.Values)
         {
-            if ((cwav.rSound is not null) && cwav.rSound.bPlaying)
+            if ((cwav.rSound != null) && cwav.rSound.bPlaying)
             {
                 cwav.n再生開始時刻 += nBGMAdjustの増減値;
             }
@@ -812,7 +812,7 @@ internal class CDTX : CActivity
     {
         foreach (CWAV cwav in this.listWAV.Values)
         {
-            if ((cwav.rSound is not null) && cwav.rSound.bPlaying)
+            if ((cwav.rSound != null) && cwav.rSound.bPlaying)
             {
                 cwav.rSound.t再生を一時停止する();
                 cwav.n一時停止時刻 = CSoundManager.rc演奏用タイマ.nシステム時刻ms;
@@ -823,7 +823,7 @@ internal class CDTX : CActivity
     {
         foreach (CWAV cwav in this.listWAV.Values)
         {
-            if ((cwav.rSound is not null) && cwav.rSound.b一時停止中)
+            if ((cwav.rSound != null) && cwav.rSound.b一時停止中)
             {
                 cwav.rSound.t再生を再開する(cwav.n一時停止時刻 - cwav.n再生開始時刻);
                 cwav.n再生開始時刻 += CSoundManager.rc演奏用タイマ.nシステム時刻ms - cwav.n一時停止時刻;
@@ -929,7 +929,7 @@ internal class CDTX : CActivity
                 break;
             }
         }
-        if (cbpm is null)
+        if (cbpm == null)
         {
             cbpm = new CBPM();
             cbpm.n内部番号 = this.n内部番号BPM1to++;
@@ -1305,10 +1305,10 @@ internal class CDTX : CActivity
 
             OTCMedley obj = JsonSerializer.Deserialize<OTCMedley>(入力文字列, new JsonSerializerOptions() { AllowTrailingCommas = true });
 
-            if (obj.Jouken is not null)
+            if (obj.Jouken != null)
                 for (int joukenindex = 0; joukenindex < Math.Min(obj.Jouken.Length, 3); joukenindex++)
                 {
-                    if (!string.IsNullOrEmpty(obj.Jouken[joukenindex].Type) && !string.IsNullOrEmpty(obj.Jouken[joukenindex].Range) && obj.Jouken[joukenindex].Value[0] is not null)
+                    if (!string.IsNullOrEmpty(obj.Jouken[joukenindex].Type) && !string.IsNullOrEmpty(obj.Jouken[joukenindex].Range) && obj.Jouken[joukenindex].Value[0] != null)
                     {
                         Exam.Type examType;
                         Exam.Range examRange;
@@ -1355,7 +1355,7 @@ internal class CDTX : CActivity
                                 examRange = Exam.Range.More;
                                 break;
                         }
-                        if (obj.Jouken[joukenindex].Value[1] is not null)
+                        if (obj.Jouken[joukenindex].Value[1] != null)
                         {
                             try
                             {
@@ -1456,7 +1456,7 @@ internal class CDTX : CActivity
             #endregion
             #endregion
 
-            if (obj.Humen is not null)
+            if (obj.Humen != null)
                 for (int humenindex = 0; humenindex < obj.Humen.Length; humenindex++)
                 {
 
@@ -1505,7 +1505,7 @@ internal class CDTX : CActivity
                     OTCCource objtcc = JsonSerializer.Deserialize<OTCCource>(tccstr, new JsonSerializerOptions() { AllowTrailingCommas = true });
 
                     var dansongs = new DanSongs();
-                    if (objtci.SubTitle is not null)
+                    if (objtci.SubTitle != null)
                     {
                         if (objtci.SubTitle.StartsWith("++") || objtci.SubTitle.StartsWith("--"))
                         {
@@ -1579,7 +1579,7 @@ internal class CDTX : CActivity
         OTCInfomation obj = JsonSerializer.Deserialize<OTCInfomation>(入力文字列, new JsonSerializerOptions() { AllowTrailingCommas = true });
 
         #region[BGM]
-        if (strBGM_PATH is not null)
+        if (strBGM_PATH != null)
         {
             Trace.TraceWarning($"{nameof(CDTX)} is ignoring an extra WAVE header in {this.strFilenameの絶対パス}");
         }
@@ -1587,7 +1587,7 @@ internal class CDTX : CActivity
         {
             this.strBGM_PATH = CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strFilename, obj.WAVFile);
             //tbWave.Text = strCommandParam;
-            if (this.listWAV is not null)
+            if (this.listWAV != null)
             {
                 // 2018-08-27 twopointzero - DO attempt to load (or queue scanning) loudness metadata here.
                 //                           TJAP3 is either launching, enumerating songs, or is about to
@@ -1611,7 +1611,7 @@ internal class CDTX : CActivity
         }
         #endregion
 
-        if (obj.BPM is not null) //BPMCHANGEもかませる
+        if (obj.BPM != null) //BPMCHANGEもかませる
         {
             double dbBPM = Convert.ToDouble(obj.BPM);
             this.dbNowBPM = dbBPM;
@@ -1649,7 +1649,7 @@ internal class CDTX : CActivity
             this.n内部番号BPM1to++;
         }
 
-        if (obj.Offset is not null) //TJAと同じようにDELAYをかませる
+        if (obj.Offset != null) //TJAと同じようにDELAYをかませる
         {
             double nDELAY = (Convert.ToDouble(obj.Offset) * 1000.0);
 
@@ -1762,7 +1762,7 @@ internal class CDTX : CActivity
 
         #region[タイトル&サブタイ]
         this.TITLE = obj.Title;
-        if (obj.SubTitle is not null)
+        if (obj.SubTitle != null)
         {
             if (obj.SubTitle.StartsWith("--"))
             {
@@ -1782,7 +1782,7 @@ internal class CDTX : CActivity
         #endregion
 
         #region[BGM]
-        if (strBGM_PATH is not null)
+        if (strBGM_PATH != null)
         {
             Trace.TraceWarning($"{nameof(CDTX)} is ignoring an extra WAVE header in {this.strFilenameの絶対パス}");
         }
@@ -1790,7 +1790,7 @@ internal class CDTX : CActivity
         {
             this.strBGM_PATH = CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strFilename, obj.WAVFile);
             //tbWave.Text = strCommandParam;
-            if (this.listWAV is not null)
+            if (this.listWAV != null)
             {
                 // 2018-08-27 twopointzero - DO attempt to load (or queue scanning) loudness metadata here.
                 //                           TJAP3 is either launching, enumerating songs, or is about to
@@ -1815,7 +1815,7 @@ internal class CDTX : CActivity
         #endregion
 
         #region[BPM]
-        if (obj.BPM is not null)
+        if (obj.BPM != null)
         {
             this.BPM = (double)obj.BPM;
             this.BASEBPM = (double)obj.BPM;
@@ -1843,7 +1843,7 @@ internal class CDTX : CActivity
         #endregion
 
         #region[OFFSET]
-        if (obj.Offset is not null)
+        if (obj.Offset != null)
             this.nOFFSET = (int)((double)obj.Offset * 1000);
         else
             this.nOFFSET = 0;
@@ -1855,7 +1855,7 @@ internal class CDTX : CActivity
         #endregion
 
         #region[MOVIEOFFSET]
-        if (obj.MVOffset is not null)
+        if (obj.MVOffset != null)
             this.nMOVIEOFFSET = (int)(obj.MVOffset * 1000);
         else
             this.nMOVIEOFFSET = 0;
@@ -1866,7 +1866,7 @@ internal class CDTX : CActivity
         #endregion
 
         #region[DEMOSTART]
-        if (obj.PreviewOffset is not null)
+        if (obj.PreviewOffset != null)
         {
             int nOFFSETms;
             try
@@ -1943,7 +1943,7 @@ internal class CDTX : CActivity
             this.n参照中の難易度 = strConvertCourse(obj.Courses[i].Diffculty);
             coursesindex[n参照中の難易度] = i;
             this.b譜面が存在する[n参照中の難易度] = true;
-            if (obj.Courses[i].Level is not null)
+            if (obj.Courses[i].Level != null)
                 this.LEVELtaiko[this.n参照中の難易度] = (int)obj.Courses[i].Level;
             else
                 this.LEVELtaiko[this.n参照中の難易度] = 10;
@@ -1979,7 +1979,7 @@ internal class CDTX : CActivity
 
         if (n読み込むセッション譜面パート >= 1)
         {
-            if (obj.Courses[coursesindex[n読み込むコース]].Multiple is null || obj.Courses[coursesindex[n読み込むコース]].Multiple.Length < n読み込むセッション譜面パート || string.IsNullOrEmpty(obj.Courses[coursesindex[n読み込むコース]].Multiple[n読み込むセッション譜面パート - 1]))
+            if (obj.Courses[coursesindex[n読み込むコース]].Multiple == null || obj.Courses[coursesindex[n読み込むコース]].Multiple.Length < n読み込むセッション譜面パート || string.IsNullOrEmpty(obj.Courses[coursesindex[n読み込むコース]].Multiple[n読み込むセッション譜面パート - 1]))
             {
                 n読み込むセッション譜面パート = 0;
             }
@@ -2061,23 +2061,23 @@ internal class CDTX : CActivity
 
         this.nScoreModeTmp = 2;
 
-        if (obj.ScoreInit is not null)
+        if (obj.ScoreInit != null)
         {
             this.nScoreInit[0, this.n参照中の難易度] = Convert.ToInt16(obj.ScoreInit);
             this.b配点が指定されている[0, this.n参照中の難易度] = true;
         }
 
-        if (obj.ScoreDiff is not null)
+        if (obj.ScoreDiff != null)
         {
             this.nScoreDiff[this.n参照中の難易度] = Convert.ToInt16(obj.ScoreDiff);
             this.b配点が指定されている[1, this.n参照中の難易度] = true;
         }
 
-        if (obj.Balloon is not null)
+        if (obj.Balloon != null)
         {
             for (int n = 0; n < obj.Balloon.Length; n++)
             {
-                if (obj.Balloon[n] is not null)
+                if (obj.Balloon[n] != null)
                     listBalloon_Normal.Add((int)obj.Balloon[n]);
                 else
                     listBalloon_Normal.Add(5);
@@ -2970,7 +2970,7 @@ internal class CDTX : CActivity
 
         while (true)
         {//2020.05.29 Mr-Ojii 間違えて、命令の最後の所に,を入れてしまった時の対応
-            if (argument is not null && argument[argument.Length - 1] == ',')
+            if (argument != null && argument[argument.Length - 1] == ',')
                 argument = argument.Substring(0, argument.Length - 1);
             else
                 break;
@@ -3596,7 +3596,7 @@ internal class CDTX : CActivity
             {
                 if (listChips[i].nチャンネル番号 == 0x15 || listChips[i].nチャンネル番号 == 0x16)
                 {
-                    if (nReturnChip is null)
+                    if (nReturnChip == null)
                         nReturnChip = i;
 
                     //ReturnChipがnullであったら適応
@@ -3608,7 +3608,7 @@ internal class CDTX : CActivity
 
                 if (listChips[i].nチャンネル番号 == Flag)
                 {
-                    if (nReturnChip is null)
+                    if (nReturnChip == null)
                         nReturnChip = i;
                     //ReturnChipがnullであったら適応
                 }
@@ -3616,7 +3616,7 @@ internal class CDTX : CActivity
         }
 
         //もし、nReturnChipがnullだったらlistChipのCount - 1にセットする。
-        return listChips[nReturnChip is null ? listChips.Count - 1 : (int)nReturnChip];
+        return listChips[nReturnChip == null ? listChips.Count - 1 : (int)nReturnChip];
     }
 
     private void WarnSplitLength(string name, string[] strArray, int minimumLength)
@@ -4268,7 +4268,7 @@ internal class CDTX : CActivity
 
         if (HeaderDict.TryGetValue("WAVE", out strCommandParam))
         {
-            if (strBGM_PATH is not null)
+            if (strBGM_PATH != null)
             {
                 Trace.TraceWarning($"{nameof(CDTX)} is ignoring an extra WAVE header in {this.strFilenameの絶対パス}");
             }
@@ -4276,7 +4276,7 @@ internal class CDTX : CActivity
             {
                 this.strBGM_PATH = CDTXCompanionFileFinder.FindFileName(this.strフォルダ名, strFilename, strCommandParam);
                 //tbWave.Text = strCommandParam;
-                if (this.listWAV is not null)
+                if (this.listWAV != null)
                 {
                     // 2018-08-27 twopointzero - DO attempt to load (or queue scanning) loudness metadata here.
                     //                           TJAP3 is either launching, enumerating songs, or is about to
@@ -4984,7 +4984,7 @@ internal class CDTX : CActivity
             int duration = 0;
             if (listWAV.TryGetValue(pChip.n整数値_内部番号, out var wc))
             {
-                duration = (wc.rSound is null) ? 0 : (int)wc.rSound.nDurationms; // #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
+                duration = (wc.rSound == null) ? 0 : (int)wc.rSound.nDurationms; // #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
             }
             //Debug.WriteLine("duration=" + duration );
             int n新RemoveMixer時刻ms, n新RemoveMixer位置;
@@ -5119,7 +5119,7 @@ internal class CDTX : CActivity
     }
     public override void On非活性化()
     {
-        if (this.listWAV is not null)
+        if (this.listWAV != null)
         {
             foreach (CWAV cwav in this.listWAV.Values)
             {
@@ -5127,7 +5127,7 @@ internal class CDTX : CActivity
             }
             this.listWAV = null;
         }
-        if (this.listVD is not null)
+        if (this.listVD != null)
         {
             foreach (CVideoDecoder cvd in this.listVD.Values)
             {
@@ -5135,58 +5135,58 @@ internal class CDTX : CActivity
             }
             this.listVD = null;
         }
-        if (this.listBPM is not null)
+        if (this.listBPM != null)
         {
             this.listBPM.Clear();
             this.listBPM = null;
         }
-        if (this.listDELAY is not null)
+        if (this.listDELAY != null)
         {
             this.listDELAY.Clear();
             this.listDELAY = null;
         }
-        if (this.listBRANCH is not null)
+        if (this.listBRANCH != null)
         {
             this.listBRANCH.Clear();
             this.listBRANCH = null;
         }
-        if (this.listJPOSSCROLL is not null)
+        if (this.listJPOSSCROLL != null)
         {
             this.listJPOSSCROLL.Clear();
             this.listJPOSSCROLL = null;
         }
-        if (this.List_DanSongs is not null)
+        if (this.List_DanSongs != null)
         {
             this.List_DanSongs.Clear();
             this.List_DanSongs = null;
         }
 
-        if (this.listChip is not null)
+        if (this.listChip != null)
         {
             this.listChip.Clear();
         }
 
-        if (this.listBalloon_Normal is not null)
+        if (this.listBalloon_Normal != null)
         {
             this.listBalloon_Normal.Clear();
         }
-        if (this.listBalloon_Expert is not null)
+        if (this.listBalloon_Expert != null)
         {
             this.listBalloon_Expert.Clear();
         }
-        if (this.listBalloon_Master is not null)
+        if (this.listBalloon_Master != null)
         {
             this.listBalloon_Master.Clear();
         }
-        if (this.listLyric is not null)
+        if (this.listLyric != null)
         {
             this.listLyric.Clear();
         }
-        if (this.listLyric2 is not null)
+        if (this.listLyric2 != null)
         {
             this.listLyric2.Clear();
         }
-        if (this.listVD is not null)
+        if (this.listVD != null)
         {
             foreach (CVideoDecoder cvd in this.listVD.Values)
             {

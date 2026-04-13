@@ -101,7 +101,7 @@ public class CTraceLogListener : TraceListener
 
     private void tWriteEventType(TraceEventType eventType)
     {
-        if (this.streamWriter is not null)
+        if (this.streamWriter != null)
         {
             try
             {
@@ -135,7 +135,7 @@ public class CTraceLogListener : TraceListener
     }
     private void tWriteIndent()
     {
-        if ((this.streamWriter is not null) && (base.IndentLevel > 0))
+        if ((this.streamWriter != null) && (base.IndentLevel > 0))
         {
             try
             {
